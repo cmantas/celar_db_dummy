@@ -15,6 +15,8 @@ public class Tester {
 
 	public static void main(String args[]){
 		
+		// line added by ggian
+		
 		//init table objects
 		UserTable usertable = new UserTable(true);
 		ModuleTable moduleTable=new ModuleTable(true);
