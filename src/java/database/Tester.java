@@ -21,6 +21,7 @@ public class Tester {
 		ApplicationTable appTable=new ApplicationTable(true);
 		ModuleDependencyTable modDep=new ModuleDependencyTable(true);
 		ProvidedResourceTable provResTable=new ProvidedResourceTable(true);
+		SpecsTable specsTable=new SpecsTable(true);
 		ComponentTable compTable=new ComponentTable(true);
 		ComponentDependencyTable compDep=new ComponentDependencyTable(true);
 		DeploymentTable deplTable=new DeploymentTable(true);
@@ -58,6 +59,9 @@ public class Tester {
 		int providedResourceId=provResTable.insertProvidedResource("vm", "dummy_vm");
 		System.out.println("provided resource with id "+providedResourceId
 			+" inserted exists: "+provResTable.exists(providedResourceId));
+		int specId=specsTable.insertSpecs(providedResourceId, "tiny vm");
+		System.out.println("spec with id="+specId+" inserted. exists: "
+			+specsTable.exists(specId));
 		//create a component for an existing module with an existing provider resource
 		int compId=compTable.insertComponent(module2Id, providedResourceId);
 		System.out.println("Component with id="+compId
@@ -122,8 +126,10 @@ public class Tester {
 			+componentDependencies);
 		compTable.delete(compId);
 		System.out.println("deleted component. exists: "+compTable.exists(compId));
+		specsTable.delete(specId);
+		System.out.println("deleted sppec. exists:"+specsTable.exists(specId));
 		provResTable.delete(providedResourceId);
-		System.out.println("deleted resouce. exists: "+provResTable.exists(providedResourceId));	
+		System.out.println("deleted prov resouce. exists: "+provResTable.exists(providedResourceId));	
 		modDep.deleteDependency(moduleId, module2Id);
 		moduleDependencies=modDep.findDependencies(moduleId);
 		System.out.println("chris's apache dependencies after delete: "+moduleDependencies);

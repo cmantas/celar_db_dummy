@@ -24,10 +24,10 @@ public class SpecsTable extends IDTable {
 	 * @param description the description of this resource
 	 * @return true if success false if not
 	 */
-	public boolean insertSpecs(int id, String type, String description){
+	public boolean insertSpecs(int id, int PROVIDED_RESOURCE_id, String description){
 		Map<String, String> data = new java.util.TreeMap<String, String>();
 		data.put("id", Integer.toString(id));
-		data.put("type",type);
+		data.put("PROVIDED_RESOURCE_id",Integer.toString(PROVIDED_RESOURCE_id));
 		data.put("description",description);
 		return	this.insertData(data);
 	}
@@ -35,14 +35,14 @@ public class SpecsTable extends IDTable {
 
 	
 	/**
-	 * Inserts a provided resource  with the specified data at the next available id 
-	 * @param APPLICATION_id the component id that this component is from
-	 * @param name the name of the component
+	 * Inserts a spec with the specified data at the next available id 
+	 * @param PROVIDED_RESOURCE_id the provided resource this is a spec of
+	 * @param description the description of this resource 
 	 * @return the given id if successful, -1 if not. 
 	 */
-	public int insertSpecs( String type, String description){
+	public int insertSpecs( int PROVIDED_RESOURCE_id, String description){
 		int id=this.getNextId();
-		if(insertSpecs(id, type, description))
+		if(insertSpecs(id, PROVIDED_RESOURCE_id, description))
 			return id;
 		else return -1;
 	}
