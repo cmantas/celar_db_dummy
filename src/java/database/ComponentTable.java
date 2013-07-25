@@ -1,5 +1,6 @@
 package database;
 
+import database.entities.Component;
 import java.util.Map;
 
 public class ComponentTable extends IDTable {
@@ -45,6 +46,11 @@ public class ComponentTable extends IDTable {
 		if(insertComponent(id,	MODULE_id,  PROVIDED_RESOURCE_id))
 			return id;
 		else return -1;
+	}
+
+
+	public Component getComponent(int id){
+		return new Component(id, this);
 	}
 
 }

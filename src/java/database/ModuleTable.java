@@ -1,5 +1,6 @@
 package database;
 
+import database.entities.Module;
 import java.sql.Date;
 import java.util.Map;
 
@@ -45,6 +46,11 @@ public class ModuleTable extends IDTable {
 		if(insertModule(id,APPLICATION_id, name))
 			return id;
 		else return -1;
+	}
+
+
+	public Module getModule(int id){
+		return new Module(id, this);	
 	}
 
 }

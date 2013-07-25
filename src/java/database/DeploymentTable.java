@@ -1,6 +1,7 @@
 package database;
 
-import java.sql.Date;
+import database.entities.Deployment;
+import java.sql.Timestamp;
 import java.util.Map;
 
 public class DeploymentTable extends IDTable {
@@ -26,7 +27,7 @@ public class DeploymentTable extends IDTable {
 	 * @param end_time the timestamp this deployment was ended
 	 * @return true if success false if not
 	 */
-	public boolean insertDeployment(int id, int APPLICATION_id, Date start_time, Date end_time){
+	public boolean insertDeployment(int id, int APPLICATION_id, Timestamp start_time, Timestamp end_time){
 		Map<String, String> data = new java.util.TreeMap<String, String>();
 		data.put("id", Integer.toString(id));
 		data.put("APPLICATION_id", Integer.toString(APPLICATION_id));
@@ -45,11 +46,16 @@ public class DeploymentTable extends IDTable {
 	 * @param end_time the timestamp this deployment was ended
 	 * @return the given id if successful, -1 if not. 
 	 */
-	public int insertDeployment(int APPLICATION_id, Date start_time, Date end_time){
+	public int insertDeployment(int APPLICATION_id, Timestamp start_time, Timestamp end_time){
 		int id=this.getNextId();
 		if(insertDeployment(id, APPLICATION_id, start_time, end_time))
 			return id;
 		else return -1;
+	}
+
+
+	public Deployment getDeployment(int id){
+		return new Deployment(id, this);
 	}
 
 }

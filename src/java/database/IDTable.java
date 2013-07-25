@@ -1,8 +1,10 @@
 package database;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Map;
 
 
 /**
@@ -18,7 +20,7 @@ public abstract class IDTable extends Table implements DBIdentifiable{
 	
 	/**
 	 *Creates a table with an open connection if the parameter is set to true
-	 * @param openConnectioconnectn
+	 * @param onnect
 	 */
 	public IDTable(boolean connect){
 		super(connect);	
@@ -79,6 +81,32 @@ public abstract class IDTable extends Table implements DBIdentifiable{
 		else
 			return 1+ Integer.parseInt(maxVal);
 			
+	}
+	
+	/**
+	 * Retrieves the entry stored under the specified id
+	 * @param id
+	 * @return a Map of ColumnName->Value for this entry
+	 */
+	public Map<String, String> getById(int id) {
+		try {
+			Map<String, String> result = new java.util.TreeMap();
+			Statement statement = this.connection.createStatement();
+			ResultSet rs = statement.executeQuery(this.selectSQL("id=" + id));
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnCount = rsmd.getColumnCount();
+			rs.next();
+			for (int i = 1; i < columnCount + 1; i++) {
+				String name = rsmd.getColumnName(i);
+				String value = decode(rs.getString(name));
+				result.put(name, value);
+			}
+
+			return result;
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return null;
 	}
 
 	

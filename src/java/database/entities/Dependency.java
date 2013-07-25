@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package database;
+package database.entities;
 
 /**
  *
@@ -11,6 +11,8 @@ package database;
 public class Dependency {
 	String type;
 	int from_id, to_id;
+
+
 
 	public Dependency( int from_id, int to_id, String type) {
 		this.type = type;

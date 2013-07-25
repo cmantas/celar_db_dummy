@@ -1,5 +1,6 @@
 package database;
 
+import database.entities.ResizingAction;
 import java.util.Map;
 
 public class ResizingActionsTable extends IDTable {
@@ -47,6 +48,10 @@ public class ResizingActionsTable extends IDTable {
 		if(insertResizingAction(id, MODULE_id, COMPONENT_id, type))
 			return id;
 		else return -1;
+	}
+
+	public ResizingAction getResizingAction(int id){
+		return new ResizingAction(id, this);	
 	}
 
 }

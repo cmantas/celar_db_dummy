@@ -1,5 +1,6 @@
 package database;
 
+import database.entities.ProvidedResource;
 import java.util.Map;
 
 public class ProvidedResourceTable extends IDTable {
@@ -45,6 +46,10 @@ public class ProvidedResourceTable extends IDTable {
 		if(insertProvidedResource(id, type, description))
 			return id;
 		else return -1;
+	}
+
+	public ProvidedResource getProvidedResource(int id){
+		return new ProvidedResource(id,this);
 	}
 
 }

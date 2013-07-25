@@ -1,6 +1,7 @@
 package database;
 
-import java.sql.Date;
+import database.entities.Application;
+import java.sql.Timestamp;
 import java.util.Map;
 
 public class ApplicationTable extends IDTable {
@@ -27,7 +28,7 @@ public class ApplicationTable extends IDTable {
 	 * @param submitted the time submitted
 	 * @param USER_id the foreign key of the owner
 	 */
-	public boolean insertApplication(int id, String description, Date submitted, int USER_id){
+	public boolean insertApplication(int id, String description, Timestamp submitted, int USER_id){
 		Map<String, String> data = new java.util.TreeMap<String, String>();
 		data.put("id", Integer.toString(id));
 		data.put("description",description);
@@ -45,7 +46,7 @@ public class ApplicationTable extends IDTable {
 	 * @param USER_id the foreign key of the owner
 	 * @return the given id if successful, -1 if not. 
 	 */
-	public int insertApplication(String description, Date submitted, int USER_id){
+	public int insertApplication(String description, Timestamp submitted, int USER_id){
 		int id=this.getNextId();
 		if(insertApplication(id,description, submitted, USER_id))
 			return id;
@@ -59,9 +60,14 @@ public class ApplicationTable extends IDTable {
 	 */
 	public int insertApplication(String description, int USER_id){
 		int id=this.getNextId();
-		if(insertApplication(id,description, new Date(System.currentTimeMillis()), USER_id))
+		if(insertApplication(id,description, new Timestamp(System.currentTimeMillis()), USER_id))
 			return id;
 		else return -1;
+	}
+
+
+	public Application getApplication(int id){
+		return new Application(id, this);
 	}
 
 

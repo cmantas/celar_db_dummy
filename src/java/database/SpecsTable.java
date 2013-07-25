@@ -1,5 +1,6 @@
 package database;
 
+import database.entities.Spec;
 import java.util.Map;
 
 public class SpecsTable extends IDTable {
@@ -45,6 +46,10 @@ public class SpecsTable extends IDTable {
 		if(insertSpecs(id, PROVIDED_RESOURCE_id, description))
 			return id;
 		else return -1;
+	}
+
+	public Spec getSpec(int id){
+		return new Spec(id, this);
 	}
 
 }

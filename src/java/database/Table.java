@@ -114,7 +114,7 @@ public abstract class Table implements DBConnectable{
 			else if (value.equals("NOW()"))
 				/*do nothing*/;
 			else
-				value="'"+StringEscapeUtils.escapeXml(value)+"'";
+				value="'"+encode(value)+"'";
 			
 			values+=value+",";
 		}
@@ -180,7 +180,7 @@ public abstract class Table implements DBConnectable{
 	 * @return true if insertion is successful
 	 * 
 	 */
-	protected boolean insertData(Map<String, String> data){
+	public boolean insertData(Map<String, String> data){
 		try {
 			Statement statement=this.connection.createStatement();
 			statement.execute(this.insertSQL(data));
@@ -191,6 +191,20 @@ public abstract class Table implements DBConnectable{
 			return false;
 		}
 	}
-
 	
+	/**
+	 * encodes the given text for entry in the database 
+	 * @param text
+	 */
+	static protected String encode(String text){
+		return StringEscapeUtils.escapeXml(text);	
+	}
+	/**
+	 * decodes text retrieved from the DB in its previous state
+	 * @param text
+	 */
+	static protected String decode(String text){
+		return StringEscapeUtils.unescapeXml(text);
+	}
+
 }

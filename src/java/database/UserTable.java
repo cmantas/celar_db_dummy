@@ -1,5 +1,6 @@
 package database;
 
+import database.entities.User;
 import java.util.Map;
 
 public class UserTable extends IDTable {
@@ -25,6 +26,10 @@ public class UserTable extends IDTable {
 		data.put("id", Integer.toString(id));
 		data.put("name",name);
 		return	this.insertData(data);
+	}
+
+	public User getUser(int id){
+		return new User(id,this);	
 	}
 	
 

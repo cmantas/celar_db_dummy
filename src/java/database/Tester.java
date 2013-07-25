@@ -5,6 +5,7 @@
 package database;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -74,12 +75,12 @@ public class Tester {
 		System.out.println("chris's component dependencies: "+componentDependencies);
 		//create a deployment and check it exists
 		int deplId=deplTable.insertDeployment(
-			appId, new Date(System.currentTimeMillis()), null);
+			appId, new Timestamp(System.currentTimeMillis()), null);
 		System.out.println("deployment with id="+deplId
 			+" inserted. exists="+deplTable.exists(deplId));
 		//create a resource and check it exists
-		int resourceId=resTable.insertResources(deplId, compId, 
-			providedResourceId, new Date(System.currentTimeMillis()), null);
+		int resourceId=resTable.insertResource(deplId, compId, 
+			providedResourceId, new Timestamp(System.currentTimeMillis()), null);
 		System.out.println("resource with id "+resourceId+" inserted"
 			+" exists: "+resTable.exists(resourceId));
 		//create a resizing action acn check it exists
@@ -100,7 +101,7 @@ public class Tester {
 			+" exists: "+mvTable.exists(mvId));
 		
 		
-		
+		System.out.println(appTable.getById(appId));
 	
 
 		

@@ -1,6 +1,7 @@
 package database;
 
-import java.sql.Date;
+import database.entities.Resource;
+import java.sql.Timestamp;
 import java.util.Map;
 
 public class ResourcesTable extends IDTable {
@@ -29,8 +30,8 @@ public class ResourcesTable extends IDTable {
 	 * @param end_time the time this resource was destroyed
 	 * @return true if success false if not
 	 */
-	public boolean insertResources(int id, int DEPLOYMENT_id, int COMPONENT_id,
-		int PROVIDED_RESOURCE_id, Date start_time, Date end_time){
+	public boolean insertResource(int id, int DEPLOYMENT_id, int COMPONENT_id,
+		int PROVIDED_RESOURCE_id, Timestamp start_time, Timestamp end_time){
 		Map<String, String> data = new java.util.TreeMap<String, String>();
 		data.put("id", Integer.toString(id));
 		data.put("DEPLOYMENT_id", Integer.toString(DEPLOYMENT_id));
@@ -50,13 +51,17 @@ public class ResourcesTable extends IDTable {
 	 * @param name the name of the component
 	 * @return the given id if successful, -1 if not. 
 	 */
-	public int insertResources( int DEPLOYMENT_id, int COMPONENT_id,
-		int PROVIDED_RESOURCE_id, Date start_time, Date end_time){
+	public int insertResource( int DEPLOYMENT_id, int COMPONENT_id,
+		int PROVIDED_RESOURCE_id, Timestamp start_time, Timestamp end_time){
 		int id=this.getNextId();
-		if(insertResources(id, DEPLOYMENT_id, COMPONENT_id,
+		if(insertResource(id, DEPLOYMENT_id, COMPONENT_id,
 			PROVIDED_RESOURCE_id, start_time, end_time))
 			return id;
 		else return -1;
+	}
+
+	public Resource getResource(int id){
+		return new Resource(id, this);
 	}
 
 }
