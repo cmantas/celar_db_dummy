@@ -96,8 +96,22 @@ public static void main(String args[]) throws NotInDBaseException{
 		resource.store();
 		resource=resTable.getResource(resource.id);
 		System.out.println("Resource: "+resource);
-			
+		//create, save and retreive a metric
+		Metric cpuLoad=new Metric(component, new Timestamp(System.currentTimeMillis()), metricsTable);
+		cpuLoad.store();
+		cpuLoad=metricsTable.getMetric(cpuLoad.id);
+		System.out.println("Metric cpu load: "+cpuLoad);
+		//create, save and retreive a metric Value
+		MetricValue metricValue=new MetricValue(cpuLoad,resource, 
+			new Timestamp(System.currentTimeMillis()), mvTable);
+		metricValue.store();
+		metricValue=mvTable.getMetricValue(metricValue.id);
+		System.out.println("Metric value: "+metricValue);
 		
+
+		//Delete the entries created
+		metricValue.delete();
+		cpuLoad.delete();
 		resource.delete();
 		ra.delete();
 		component.delete();
@@ -109,6 +123,22 @@ public static void main(String args[]) throws NotInDBaseException{
 		usertable.delete(userId);
 		john.delete();
 		System.out.println("Deleted john. Exists:"+usertable.exists(john.id));
+
+
+		//close connections
+		usertable.closeConnection();
+		moduleTable.closeConnection();
+		appTable.closeConnection();
+		modDep.closeConnection();
+		provResTable.closeConnection();
+		compTable.closeConnection();
+		compDep.closeConnection();
+		deplTable.closeConnection();
+		resTable.closeConnection();
+		raTable.closeConnection();
+		desTable.closeConnection();
+		metricsTable.closeConnection();
+		mvTable.closeConnection();
 
 }//main
 	

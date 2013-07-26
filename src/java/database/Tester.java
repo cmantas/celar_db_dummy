@@ -86,15 +86,15 @@ public class Tester {
 		System.out.println("resizing action with id "+raId+" inserted"
 			+" exists: "+raTable.exists(raId));
 		//create a decision 
-		Date ts=new Date(System.currentTimeMillis());
+		Timestamp ts=new Timestamp(System.currentTimeMillis());
 		System.out.println("decision created="+desTable.insertDecision(ts, raId, 2));
 		//create a metric for a previously created component
 		int metricId=metricsTable.insertMetric(compId, ts);
 		System.out.println("metric with id "+metricId+" inserted"
 			+" exists: "+metricsTable.exists(metricId));
-		//create a metric value for a previously created metric, component, resource
-		int mvId=mvTable.insertMetric(metricId, resourceId, 
-			new Date(System.currentTimeMillis()));
+		//create a metric value for a previously created metric value, component, resource
+		int mvId=mvTable.insertMetricValue(metricId, resourceId, 
+			new Timestamp(System.currentTimeMillis()));
 		System.out.println("metric value with id "+mvId+" inserted"
 			+" exists: "+mvTable.exists(mvId));
 		

@@ -1,5 +1,5 @@
 package database;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
@@ -27,7 +27,7 @@ public class DecisionsTable extends Table {
 	 * @param RECISING_ACTION_id the resizing action taken by this decision
 	 * @param size the size/multiplicity of this action
 	 */
-	public boolean insertDecision(Date timestamp, int RECISING_ACTION_id, int size){
+	public boolean insertDecision(Timestamp timestamp, int RECISING_ACTION_id, int size){
 		Map<String, String> data = new java.util.TreeMap<String, String>();
 		data.put("timestamp", timestamp.toString());
 		data.put("RECISING_ACTION_id", Integer.toString(RECISING_ACTION_id));
@@ -42,7 +42,7 @@ public class DecisionsTable extends Table {
 	 * @param timestamp
 	 * @return # of rows affected 
 	 */
-	public int deleteDecision(Date timestamp){
+	public int deleteDecision(Timestamp timestamp){
 		String query= "DELETE FROM "+this.getTableName()+""
 			+" WHERE timestamp='"+timestamp.toString()+"';";
 		System.out.println(query);

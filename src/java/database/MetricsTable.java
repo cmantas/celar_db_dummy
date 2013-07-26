@@ -1,6 +1,7 @@
 package database;
 
-import java.sql.Date;
+import database.entities.Metric;
+import java.sql.Timestamp;
 import java.util.Map;
 
 public class MetricsTable extends IDTable {
@@ -25,7 +26,7 @@ public class MetricsTable extends IDTable {
 	 * @param timestamp the timestamp this metric was submitted 
 	 * @return true if success false if not
 	 */
-	public boolean insertMetric(int id, int COMPONENT_id, Date timestamp ){
+	public boolean insertMetric(int id, int COMPONENT_id, Timestamp timestamp ){
 		Map<String, String> data = new java.util.TreeMap<String, String>();
 		data.put("id", Integer.toString(id));
 		data.put("COMPONENT_id",Integer.toString(COMPONENT_id));
@@ -41,11 +42,15 @@ public class MetricsTable extends IDTable {
 	 * @param timestamp the timestamp this metric was submitted 
 	 * @return the given id if successful, -1 if not. 
 	 */
-	public int insertMetric(int COMPONENT_id, Date timestamp){
+	public int insertMetric(int COMPONENT_id, Timestamp timestamp){
 		int id=this.getNextId();
 		if(insertMetric(id, COMPONENT_id,  timestamp))
 			return id;
 		else return -1;
+	}
+
+	public Metric getMetric(int id){
+		return new  Metric(id, this);
 	}
 
 }
