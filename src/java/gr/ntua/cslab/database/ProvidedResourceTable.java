@@ -1,7 +1,6 @@
 package gr.ntua.cslab.database;
 
 import gr.ntua.cslab.database.entities.ProvidedResource;
-import gr.ntua.cslab.database.entities.Resource;
 import java.util.List;
 import java.util.Map;
 

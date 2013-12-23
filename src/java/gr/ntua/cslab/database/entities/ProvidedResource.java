@@ -2,6 +2,7 @@ package gr.ntua.cslab.database.entities;
 
 import gr.ntua.cslab.database.ProvidedResourceTable;
 import gr.ntua.cslab.database.Tables;
+import java.util.List;
 import java.util.Map;
 import org.json.JSONObject;
 
@@ -89,6 +90,18 @@ public class ProvidedResource extends DBIDEntity {
         this.type=jo.getString("type");
     }
 
+    /**
+     * gets all the provided resources of the given type
+     * 
+    */
+    static List<ProvidedResource> getByType(String type){
+        List<ProvidedResource> prs=new java.util.LinkedList();
+        List<Integer> pr_ids= Tables.provResTable.getIdsForSelection("type", type);
+        for(Integer id: pr_ids){
+            prs.add(new ProvidedResource(id));
+        }
+        return prs;
+    }
 
 	
 }

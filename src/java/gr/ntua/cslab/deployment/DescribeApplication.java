@@ -3,8 +3,8 @@ package gr.ntua.cslab.deployment;
 import gr.ntua.cslab.JSONServlet;
 import gr.ntua.cslab.database.entities.Application;
 import static gr.ntua.cslab.database.entities.JSONTools.parseApplication;
-import static gr.ntua.cslab.database.entities.JSONTools.exportApplication;
-import static gr.ntua.cslab.database.entities.JSONTools.parseApplicationConfiguration;
+import static gr.ntua.cslab.database.entities.JSONTools.exportApplicationConfiguration;
+import static gr.ntua.cslab.database.entities.JSONTools.parseApplicationDescription;
 import java.util.Map;
 import java.util.Arrays;
 import org.json.JSONObject;
@@ -31,8 +31,8 @@ public class DescribeApplication extends JSONServlet {
 
     @Override
     public void processJSON(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters) {
-                Application app=parseApplicationConfiguration(inputJSONParameters.get("application"),true);
-                JSONObject app_json=exportApplication(app);
+                Application app=parseApplicationDescription(inputJSONParameters.get("application"),true);
+                JSONObject app_json=exportApplicationConfiguration(app, new java.sql.Timestamp(System.currentTimeMillis()));
                 print(app_json);
     }
 

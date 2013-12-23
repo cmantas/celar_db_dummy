@@ -72,11 +72,6 @@ public class JSONTools {
         return result;
     }
     
-    public static JSONObject exportApplication(Application app){
-        JSONObject app_json=app.toJSONObject();
-        app_json.put("modules", exportApplicationModules(app, new Timestamp(System.currentTimeMillis())));
-        return app_json;
-    }
     
     
         public static JSONArray exportApplicationDeployments(Application app) {
@@ -134,10 +129,10 @@ public class JSONTools {
     
 
     
-    public static JSONObject exportProvidedResources(){
+    public static JSONObject exportProvidedResources(String type){
         JSONObject result=new JSONObject();
         JSONArray prs=new JSONArray();
-        List<ProvidedResource> resources=Tables.provResTable.getAllProvidedResources();
+        List<ProvidedResource> resources=ProvidedResource.getByType(type);
         for(ProvidedResource pr:resources){
             prs.put(exportProvidedResource(pr));
         }
@@ -164,8 +159,33 @@ public class JSONTools {
         Application app = new Application(depl.getApplicationId());
         return app;
     }
+    
+    
+    public static Application parseApplicationConfiguration(JSONObject topJson, Application app, int deplId, boolean store) {
+        try {
+            JSONArray resources = topJson.getJSONObject("configuration").getJSONArray("resources");
+            for (int i = 0; i < resources.length(); i++) {
+                JSONObject resourceJSON = resources.getJSONObject(i);
+                resourceJSON.put("DEPLOYMENT_id", deplId);
+                String componentDescription=resourceJSON.getString("component_description");
+                Component c= Component.getByDescription(componentDescription);
+                //inject in the JSON resource the information about the component Id
+                resourceJSON.put("COMPONENT_id", c.getId());
+                Resource r=new Resource(resourceJSON);
+                r.store();
+            }
+            return app;
+        } catch (NotInDBaseException ex) {
+            System.err.println("parsing not successfull");
+            ex.printStackTrace();
+        } catch (JSONException ex) {
+            System.err.println("parsing not successfull");
+            ex.printStackTrace();
+        }
+        return null;
+    }
 
-    public static Application parseApplicationConfiguration(JSONObject topJson, boolean store) {
+    public static Application parseApplicationDescription(JSONObject topJson, boolean store) {
         try {
             JSONObject  appJson;
             appJson = topJson.getJSONObject("application");
@@ -188,7 +208,6 @@ public class JSONTools {
                     Component component = new Component(c);
                     if(store) component.store();
                     System.out.println("parsed component: " + component);
- 
                 }
             }
             return app;

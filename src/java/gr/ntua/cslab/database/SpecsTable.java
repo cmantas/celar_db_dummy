@@ -58,7 +58,7 @@ public class SpecsTable extends IDTable {
             List<Spec> results=new java.util.LinkedList();
             String field="id";
             String testField="PROVIDED_RESOURCE_id";            
-            List<String> IDs=doSelectEquals(field, testField, pr.getId()).get(field);
+            List<String> IDs=doSelectEquals(field, testField, ""+pr.getId()).get(field);
             //for each of the ids create the component
             for(String id : IDs){
                 results.add(new Spec(Integer.parseInt(id)));

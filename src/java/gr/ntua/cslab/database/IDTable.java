@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.Map;
 
 
@@ -105,7 +106,13 @@ public abstract class IDTable extends Table implements DBIdentifiable{
 		}
 		return null;
 	}
-
-	
+        
+        public List<Integer> getIdsForSelection(String testField, String testValue){
+         String field="id";
+         List<Integer>  ids =new java.util.LinkedList();
+         List<String> stringIds=doSelectEquals(field, testField, testValue).get(field);
+         for(String s:stringIds) ids.add(Integer.parseInt(s));
+         return ids;
+        }
 	
 }

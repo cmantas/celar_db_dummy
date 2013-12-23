@@ -4,6 +4,7 @@ import gr.ntua.cslab.JSONServlet;
 import gr.ntua.cslab.database.entities.Application;
 import gr.ntua.cslab.database.entities.Deployment;
 import static gr.ntua.cslab.database.entities.JSONTools.parseApplicationConfiguration;
+import static gr.ntua.cslab.database.entities.JSONTools.exportApplicationConfiguration;
 import gr.ntua.cslab.database.entities.NotInDBaseException;
 import java.util.Arrays;
 import java.util.Map;
@@ -47,8 +48,9 @@ public class Deploy extends JSONServlet {
             Application app = new Application(appId);
             Deployment depl = new Deployment(app, new java.sql.Timestamp(System.currentTimeMillis()), null);
             depl.store();
-            //JSONObject rv = parseApplicationConfiguration(in_configuration, appId, depl.getId(), true);
+            app = parseApplicationConfiguration(in_configuration, app, depl.getId(), true);
             //print(rv);
+            print(exportApplicationConfiguration(app, new java.sql.Timestamp(System.currentTimeMillis())));
         } catch (NotInDBaseException ndb) {
             print("there is no app with id: " + appId + " in the DB");
         }

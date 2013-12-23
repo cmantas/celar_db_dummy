@@ -60,17 +60,24 @@ public class ComponentTable extends IDTable {
         /**
          * Retrieves all the components for the module with the given id
          * @param moduleId
+         * @return a list of components
          */
         public List<Component> getModuleComponents(int moduleId) {  
             List<Component> results=new LinkedList();
             String field="id";
             String testField="MODULE_id";            
-            List<String> IDs=doSelectEquals(field, testField, moduleId).get(field);
+            List<String> IDs=doSelectEquals(field, testField, ""+moduleId).get(field);
             //for each of the ids create the component
             for(String id : IDs){
                 results.add(new Component(Integer.parseInt(id)));
             }
             return  results;
+        }
+        
+        public Component getComponentByDescription(String description){
+            System.out.println("geting description: "+description);
+            List<Integer> IDs=getIdsForSelection("description",description);
+            return new Component(IDs.get(0));
         }
 
 }

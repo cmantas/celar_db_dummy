@@ -105,5 +105,8 @@ public class Component extends DBIDEntity {
         this.providedResourceId = jo.getInt("PROVIDED_RESOURCE_id");
         this.description=jo.getString("description");
     }
-
+    
+    static Component getByDescription(String description) throws NotInDBaseException {
+        return Tables.componentTable.getComponentByDescription(description);
+    }
 }

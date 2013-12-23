@@ -69,7 +69,7 @@ public class DeploymentTable extends IDTable {
             List<Deployment> results=new java.util.LinkedList();
             String field="id";
             String testField="APPLICATION_id";            
-            List<String> IDs=doSelectEquals(field, testField, appId).get(field);
+            List<String> IDs=doSelectEquals(field, testField, ""+appId).get(field);
             //for each of the ids create the module
             for(String id : IDs){
                 results.add(new Deployment(Integer.parseInt(id)));

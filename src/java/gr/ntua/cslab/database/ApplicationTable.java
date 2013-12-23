@@ -85,7 +85,7 @@ public class ApplicationTable extends IDTable {
         List<Application> results = new java.util.LinkedList();
         String field = "id";
         String testField = "USER_id";
-        List<String> IDs = doSelectEquals(field, testField, userId).get(field);
+        List<String> IDs = doSelectEquals(field, testField, ""+userId).get(field);
         //for each of the ids create the module
         for (String id : IDs) {
             results.add(new Application(Integer.parseInt(id)));

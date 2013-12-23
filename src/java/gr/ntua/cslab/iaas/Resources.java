@@ -3,84 +3,44 @@
  * and open the template in the editor.
  */
 package gr.ntua.cslab.iaas;
+import gr.ntua.cslab.JSONServlet;
+import static gr.ntua.cslab.database.entities.JSONTools.exportProvidedResources;
+import java.util.List;
+import java.util.Map;
+import org.json.JSONObject;
 
-import gr.ntua.cslab.database.entities.JSONTools;
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  *
  * @author cmantas
  */
-public class Resources extends HttpServlet {
+public class Resources extends JSONServlet {
 
-	/**
-	 * Processes requests for both HTTP
-	 * <code>GET</code> and
-	 * <code>POST</code> methods.
-	 *
-	 * @param request servlet request
-	 * @param response servlet response
-	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
-	 */
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
-		response.setContentType("text;charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		try {
-			String type=request.getParameter("type");
-		
-			out.println(JSONTools.exportProvidedResources().toString(2));
-                        System.out.println(JSONTools.exportProvidedResources().toString(2));
-                        
-		} finally {			
-			out.close();
-		}
-	}
+    @Override
+    public byte getType() {
+        return JSON_TYPE;
+    }
 
-	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-	/**
-	 * Handles the HTTP
-	 * <code>GET</code> method.
-	 *
-	 * @param request servlet request
-	 * @param response servlet response
-	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
-	 */
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
-		processRequest(request, response);
-	}
+    @Override
+    public Iterable<String> requestJSONParameters() {return null;}
 
-	/**
-	 * Handles the HTTP
-	 * <code>POST</code> method.
-	 *
-	 * @param request servlet request
-	 * @param response servlet response
-	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
-	 */
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
-		processRequest(request, response);
-	}
+    @Override
+    public Iterable<String> requestStringParameters() {
+        List<String> params=new java.util.LinkedList();
+        params.add("type");
+        return params;
+    }
 
-	/**
-	 * Returns a short description of the servlet.
-	 *
-	 * @return a String containing servlet description
-	 */
-	@Override
-	public String getServletInfo() {
-		return "Short description";
-	}// </editor-fold>
+    @Override
+    public void processJSON(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters) {
+        String type=inputStringParameters.get("type");
+        print(exportProvidedResources(type));
+    }
+
+    @Override
+    public String getServletInfo() {
+        return "returns the provided resources of the specified type";
+    }
+
+
 }

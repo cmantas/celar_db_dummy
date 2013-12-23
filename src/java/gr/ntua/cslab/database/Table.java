@@ -234,7 +234,7 @@ public abstract class Table extends DBConnectable{
          * @param resultFields the comma separated fields of the table that are to be selected
          * @return a mapping of ColumnName -> List(culumn values) null if there are no results
          */
-    public Map<String, List<String>> doSelectEquals(String resultFields, String testField, int value) {
+    public Map<String, List<String>> doSelectEquals(String resultFields, String testField, String value) {
             String whereStatement= testField + "='" + value + "';";
             return doSelect(resultFields, whereStatement);
     }

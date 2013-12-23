@@ -62,7 +62,7 @@ public class MetricValueTable extends IDTable {
             List<MetricValue> results=new java.util.LinkedList();
             String field="id";
             String testField="METRICS_id";            
-            List<String> IDs=doSelectEquals(field, testField, metricId).get(field);
+            List<String> IDs=doSelectEquals(field, testField, ""+metricId).get(field);
             //for each of the ids create the module
             for(String id : IDs){
                 results.add(new MetricValue(Integer.parseInt(id)));
