@@ -134,7 +134,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DescribeApplication</servlet-name>
-        <url-pattern>/deployment/describeApplication</url-pattern>
+        <url-pattern>/deployment/describe</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

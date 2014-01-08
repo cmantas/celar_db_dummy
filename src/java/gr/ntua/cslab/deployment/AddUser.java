@@ -20,16 +20,14 @@ public class AddUser extends gr.ntua.cslab.JSONServlet {
     }
 
     @Override
-    public Iterable<String> requestStringParameters() {
-        return null;
-    }
+    public Iterable<String> requestStringParameters() {return new java.util.LinkedList();}
 
     @Override
     public void processJSON(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters) {
          JSONObject userj=inputJSONParameters.get("user").getJSONObject("user");
          User user=new User(userj);
          user.store();
-         print(user.toJSONObject());
+         print(user.getId());
     }
 
     @Override

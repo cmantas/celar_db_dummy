@@ -27,16 +27,16 @@ public class DescribeApplication extends JSONServlet {
     }
 
     @Override
-    public Iterable<String> requestStringParameters() {return null;}
+    public Iterable<String> requestStringParameters() {return new java.util.LinkedList();}
 
     @Override
     public void processJSON(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters) {
                 Application app=parseApplicationDescription(inputJSONParameters.get("application"),true);
-                JSONObject app_json=exportApplicationConfiguration(app, new java.sql.Timestamp(System.currentTimeMillis()));
-                print(app_json);
+                //return the app id of the new application
+                print(app.getId());
     }
 
     @Override
-    public String getServletInfo() {return "inserts an application in the DB";}
+    public String getServletInfo() {return "inserts an application in the DB based on its description";}
 
 }

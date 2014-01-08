@@ -76,6 +76,9 @@ public abstract class JSONServlet extends HttpServlet {
     public void print(String str){
         printString(str);
     }
+    
+    public void print(int i){ printString(""+i);}
+    
     public void printString(String msg){
            out.println(msg);
        }
@@ -84,8 +87,8 @@ public abstract class JSONServlet extends HttpServlet {
      *
      * @return
      */
-    protected String responseType(){
-           switch(getType()){
+    protected String responseType(byte type){
+           switch(type){
                    case JSON_TYPE: 
                        return "text;charset=UTF-8";
                    case HTML_TYPE:
@@ -103,7 +106,7 @@ public abstract class JSONServlet extends HttpServlet {
     protected String getStringParameter(String parameter){
            String param = request.getParameter(parameter);
            if(param==null)
-               print("input parameter: "+ parameter + "is missing");
+               print("input String parameter \""+ parameter + "\" is missing");
            return param;
     
 }
@@ -116,6 +119,8 @@ public abstract class JSONServlet extends HttpServlet {
     public JSONObject getJSONParameter( String parameter){
            try{
                String paramStr=request.getParameter(parameter);
+               if(paramStr==null)
+                 print("input JSON parameter \""+ parameter + "\" is missing");
                return new JSONObject(paramStr);
            }
            catch(JSONException je){
@@ -134,35 +139,53 @@ public abstract class JSONServlet extends HttpServlet {
 	 * @throws ServletException if a servlet-specific error occurs
 	 * @throws IOException if an I/O error occurs
 	 */
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
-                this.request=request;
-		response.setContentType(responseType());
-		out = response.getWriter();
-        
-		try {
-                        //load all of the json parameters
-                        Map<String, JSONObject> inputJSONParameters=new java.util.HashMap(5);
-                        if(requestJSONParameters()!=null)
-                            for (String param:requestJSONParameters()){
-                                inputJSONParameters.put(param, getJSONParameter(param));
-                            }
-                        //load the rest of the parameters
-                        Map<String, String> inputStringParams=new java.util.HashMap(5);
-                        if(requestStringParameters()!=null)
-                            for (String param:requestStringParameters()) 
-                                inputStringParams.put(param, getStringParameter(param));
-                     
-                        processJSON(inputJSONParameters, inputStringParams);
-		} 
-                catch (Exception e){
-                    print("ERROR parsing input parameters - check their validity");
-                    e.printStackTrace();
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        this.request = request;
+        response.setContentType(responseType(this.getType()));
+        out = response.getWriter();
+
+        try {
+            
+            //check if the info parameter is given and if so just print the info
+            if (request.getParameter("info")!=null){
+                response.setContentType(responseType(HTML_TYPE));
+                print("<html>\n<h2>servlet info</h2>");
+                print(this.getServletInfo());
+                print("<h3>JSON Parameters</h3>\n<ul>");
+                for(String param : requestJSONParameters()){
+                    print("\t<li>"+param+"</li>");
                 }
-                finally {			
-			out.close();
-		}
-	}
+                print("</ul>\n<h3>String parameters</h3>\n<ul>");
+                for(String param : requestStringParameters()){
+                    print("\t<li>"+param+"</li>");
+                }                
+                print("</ul>\n</html>");
+                return;
+            }
+
+            //load all of the json parameters
+            Map<String, JSONObject> inputJSONParameters = new java.util.HashMap(5);
+            if (requestJSONParameters() != null) {
+                for (String param : requestJSONParameters()) {
+                    inputJSONParameters.put(param, getJSONParameter(param));
+                }
+            }
+            //load the rest of the parameters
+            Map<String, String> inputStringParams = new java.util.HashMap(5);
+            if (requestStringParameters() != null) {
+                for (String param : requestStringParameters()) {
+                    inputStringParams.put(param, getStringParameter(param));
+                }
+            }
+
+            processJSON(inputJSONParameters, inputStringParams);
+        } catch (Exception e) {
+            print("ERROR parsing input parameters - check their validity");
+        } finally {
+            out.close();
+        }
+    }
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 	/**
