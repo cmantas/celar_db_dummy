@@ -40,7 +40,7 @@ public class Deploy extends JSONServlet {
     }
 
     @Override
-    public void processJSON(Map<String, JSONObject> inputJSONParams, Map<String, String> inputStringParams) {
+    public void processRequest(Map<String, JSONObject> inputJSONParams, Map<String, String> inputStringParams) {
         int appId = Integer.parseInt(inputStringParams.get("ApplicationId"));
         try {
             JSONObject in_configuration = inputJSONParams.get("deployment_configuration");
@@ -57,7 +57,7 @@ public class Deploy extends JSONServlet {
 
     @Override
     public byte getType() {
-        return JSON_TYPE;
+        return INT_TYPE;
     }
 
 }

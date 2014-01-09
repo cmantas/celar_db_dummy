@@ -36,7 +36,7 @@ public class GetConfiguration extends JSONServlet {
     }
 
     @Override
-    public void processJSON(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters) {
+    public void processRequest(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters) {
         String deploymentId = inputStringParameters.get("DeploymentId");
         String timestamp = inputStringParameters.get("timestamp");
 

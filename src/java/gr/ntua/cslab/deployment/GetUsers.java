@@ -4,79 +4,35 @@
  */
 package gr.ntua.cslab.deployment;
 
+import gr.ntua.cslab.JSONServlet;
 import gr.ntua.cslab.database.entities.JSONTools;
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Map;;
+import org.json.JSONObject;
 
 /**
  *
  * @author Christos Mantas <cmantas@cslab.ece.ntua.gr>
  */
-public class GetUsers extends HttpServlet {
+public class GetUsers extends JSONServlet {
 
-    /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            out.println(JSONTools.exportAllUsers().toString(3));
-        } finally {            
-            out.close();
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP
-     * <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
+    public byte getType() {return JSON_TYPE;}
 
-    /**
-     * Handles the HTTP
-     * <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    public Iterable<String> requestJSONParameters() {return new java.util.LinkedList();}
+
+    @Override
+    public Iterable<String> requestStringParameters() {return new java.util.LinkedList();}
+
+    @Override
+    public void processRequest(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters) {
+        print(JSONTools.exportAllUsers());
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+        return "Exportl all known users to a json object";
+    }
+
+
 }

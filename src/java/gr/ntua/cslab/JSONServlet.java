@@ -23,6 +23,7 @@ public abstract class JSONServlet extends HttpServlet {
     //response types
     public final static byte JSON_TYPE=1;
     public final static byte HTML_TYPE=2;
+    public final static byte INT_TYPE=3;
 
     /**
      * indentation factor for the response
@@ -58,7 +59,7 @@ public abstract class JSONServlet extends HttpServlet {
      * @param inputJSONParameters the input JSON parameters
      * @param inputStringParameters the rest of the input parameters
      */
-    public abstract void processJSON(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters);
+    public abstract void processRequest(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters);
 
 
     /**
@@ -82,10 +83,31 @@ public abstract class JSONServlet extends HttpServlet {
     public void printString(String msg){
            out.println(msg);
        }
+    
+    public void printInfo(){
+                print("<html>\n<h2>servlet info</h2>");
+                print(this.getServletInfo());
+                print("<h3>JSON Parameters</h3>\n<ul>");
+                for(String param : requestJSONParameters()){
+                    print("\t<li>"+param+"</li>");
+                }
+                print("</ul>\n<h3>String parameters</h3>\n<ul>");
+                for(String param : requestStringParameters()){
+                    print("\t<li>"+param+"</li>");
+                }
+                print("</ul>\n<h3>return type</h3>");
+                 switch(getType()){
+                   case JSON_TYPE:  print("JSON");   break;
+                   case HTML_TYPE:  print("(X)HTML");break;
+                   case INT_TYPE:   print("Integer");break;
+                   default: print("text");
+           }
+                print("</html>");
+    }
 
     /**
-     *
-     * @return
+     * @param type the byte type of the servlet
+     * @return The web MIME type of this page
      */
     protected String responseType(byte type){
            switch(type){
@@ -150,17 +172,7 @@ public abstract class JSONServlet extends HttpServlet {
             //check if the info parameter is given and if so just print the info
             if (request.getParameter("info")!=null){
                 response.setContentType(responseType(HTML_TYPE));
-                print("<html>\n<h2>servlet info</h2>");
-                print(this.getServletInfo());
-                print("<h3>JSON Parameters</h3>\n<ul>");
-                for(String param : requestJSONParameters()){
-                    print("\t<li>"+param+"</li>");
-                }
-                print("</ul>\n<h3>String parameters</h3>\n<ul>");
-                for(String param : requestStringParameters()){
-                    print("\t<li>"+param+"</li>");
-                }                
-                print("</ul>\n</html>");
+                printInfo();
                 return;
             }
 
@@ -179,7 +191,7 @@ public abstract class JSONServlet extends HttpServlet {
                 }
             }
 
-            processJSON(inputJSONParameters, inputStringParams);
+            processRequest(inputJSONParameters, inputStringParams);
         } catch (Exception e) {
             print("ERROR parsing input parameters - check their validity");
         } finally {

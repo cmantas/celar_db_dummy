@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package gr.ntua.cslab.iaas;
 import gr.ntua.cslab.JSONServlet;
 import static gr.ntua.cslab.database.entities.JSONTools.exportProvidedResources;
@@ -17,9 +13,7 @@ import org.json.JSONObject;
 public class Resources extends JSONServlet {
 
     @Override
-    public byte getType() {
-        return JSON_TYPE;
-    }
+    public byte getType() {return JSON_TYPE; }
 
     @Override
     public Iterable<String> requestJSONParameters() {return null;}
@@ -32,7 +26,7 @@ public class Resources extends JSONServlet {
     }
 
     @Override
-    public void processJSON(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters) {
+    public void processRequest(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters) {
         String type=inputStringParameters.get("type");
         print(exportProvidedResources(type));
     }
