@@ -1,4 +1,3 @@
-celar-server
+celar-db
 ============
-
- CELAR Manager, Provisioner Server, CELAR DataBase
+CELAR DataBase

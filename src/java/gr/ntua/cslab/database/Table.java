@@ -23,7 +23,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
  */
 public abstract class Table extends DBConnectable{
 
-	public static boolean DEBUG=false;
+	public static boolean DEBUG=true;
 	
 
 	public Table(){super();}
@@ -62,7 +62,7 @@ public abstract class Table extends DBConnectable{
 		
 		//generate SQL keys SET
 		for(Entry<String, String> e:tupples.entrySet())
-			keys+=e.getKey()+",";
+			keys+="\""+e.getKey()+"\",";
 		keys=keys.substring(0, keys.length()-1);
 		keys="("+keys+")";
 
@@ -70,18 +70,21 @@ public abstract class Table extends DBConnectable{
 		for(Entry<String, String> e:tupples.entrySet()){
 			String value=e.getValue();
 			//escape special values
-			if(value.equals("NULL"))
+			if(value.equals("NULL")){
 				/*do nothing*/;
-			else if (value.equals("NOW()"))
+                        }
+			else if (value.equals("NOW()")){
 				/*do nothing*/;
-			else
+                        }
+                        else{
 				value="'"+encode(value)+"'";
+                        }
 			
 			values+=value+",";
 		}
 		values=values.substring(0,values.length()-1);
 		values="("+values+")";
-		String sql = "INSERT INTO "+this.getTableName()+" "+keys+" VALUES "+values+";";
+		String sql = "INSERT INTO \""+this.getTableName()+"\" "+keys+" VALUES "+values+";";
 		return sql;
 	}
 	
@@ -92,7 +95,7 @@ public abstract class Table extends DBConnectable{
 	 * @return
 	 */
 	protected String deleteSQL(String tableField, String tableValue) {
-		String sql = "DELETE FROM "+this.getTableName()+" WHERE "+tableField+"="+tableValue;
+		String sql = "DELETE FROM \""+this.getTableName()+"\" WHERE "+tableField+"="+tableValue;
 //		System.out.println(sql);
 		return sql;
 	}
@@ -105,7 +108,7 @@ public abstract class Table extends DBConnectable{
 	 * @return
 	 */
 	public String selectSQL(String whereStatement){
-		return "SELECT * FROM "+this.getTableName()+" WHERE "+whereStatement;
+		return "SELECT * FROM \""+this.getTableName()+"\" WHERE "+whereStatement;
 	}
         
         /**
@@ -118,21 +121,21 @@ public abstract class Table extends DBConnectable{
 	 * @param field
 	 * @return 
 	 */
-	protected String maxValue(String field){
-		Statement statement;
-		String query="SELECT MAX("+field+") FROM "+ this.getTableName()+";";
-		try {
-			statement = this.connection.createStatement();
-			ResultSet set=statement.executeQuery(query);
-			set.next();
-			String result=set.getString("MAX("+field+")");	
-			set.close();
-			statement.close();
-			return result;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
+    protected String maxValue(String field) {
+        Statement statement;
+        String query = "SELECT MAX(" + field + ") FROM \"" + this.getTableName() + "\";";
+        try {
+            statement = this.connection.createStatement();
+            ResultSet set = statement.executeQuery(query);
+            set.next();
+            String result = set.getString("MAX(" + field + ")");
+            set.close();
+            statement.close();
+            return result;
+        } catch (SQLException e) {
+            System.out.println("Table empty, returning null");
+            return null;
+        }
 
 	}
 
@@ -196,7 +199,7 @@ public abstract class Table extends DBConnectable{
      * @return a mapping of ColumnName -> List(culumn values) null if there are no results
      */
     public Map<String, List<String>> doSelect(String resultFields, String whereStatement) {
-        String query = "SELECT " + resultFields + " FROM " + getTableName() + " WHERE " + whereStatement;
+        String query = "SELECT " + resultFields + " FROM \"" + getTableName() + "\" WHERE " + whereStatement;
         if(DEBUG)
             System.out.println(query);
         //try executing the query, else return null
@@ -235,7 +238,7 @@ public abstract class Table extends DBConnectable{
          * @return a mapping of ColumnName -> List(culumn values) null if there are no results
          */
     public Map<String, List<String>> doSelectEquals(String resultFields, String testField, String value) {
-            String whereStatement= testField + "='" + value + "';";
+            String whereStatement= "\""+testField + "\"='" + value + "';";
             return doSelect(resultFields, whereStatement);
     }
 

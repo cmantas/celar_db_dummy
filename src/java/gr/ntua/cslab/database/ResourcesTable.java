@@ -74,7 +74,7 @@ public class ResourcesTable extends IDTable {
             List<Resource> results=new LinkedList();
             String field="id";
             String testField="COMPONENT_id";
-            String condition="COMPONENT_id='"+ComponentId+"' AND start_time<='"+ts+"' AND (end_time>='"+ts+"' OR end_time IS NULL)";
+            String condition="\"COMPONENT_id\"='"+ComponentId+"' AND start_time<='"+ts+"' AND (end_time>='"+ts+"' OR end_time IS NULL)";
             List<String> IDs=doSelect(field, condition).get(field);
             //for each of the ids create the component
             for(String id : IDs){

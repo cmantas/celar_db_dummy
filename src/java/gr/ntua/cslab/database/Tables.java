@@ -20,8 +20,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -46,20 +44,20 @@ public class Tables  extends DBConnectable{
 		public static MetricsTable metricsTable=new MetricsTable(true);
 		public static MetricValueTable mvTable=new MetricValueTable(true);
                 
-    final static String killlerSQL = "DELETE FROM SPECS WHERE 1;\n"
-            + "DELETE FROM METRIC_VALUES WHERE 1;\n"
-            + "DELETE FROM METRICS WHERE 1;\n"
-            + "DELETE FROM MODULE_DEPENDENCY WHERE 1;\n"
-            + "DELETE FROM COMPONENT__DEPENDENCY WHERE 1;\n"
-            + "DELETE FROM RESOURCES WHERE 1;\n"
-            + "DELETE FROM DECISIONS WHERE 1;\n"
-            + "DELETE FROM RESIZING_ACTIONS WHERE 1;\n"
-            + "DELETE FROM COMPONENT WHERE 1;\n"
-            + "DELETE FROM PROVIDED_RESOURCE WHERE 1;\n"
-            + "DELETE FROM MODULE WHERE 1;\n"
-            + "DELETE FROM DEPLOYMENT WHERE 1;\n"
-            + "DELETE FROM APPLICATION WHERE 1;\n"
-            + "DELETE FROM USER WHERE 1;";
+    final static String killlerSQL = "DELETE FROM \"SPECS\" WHERE TRUE;\n"
+            + "DELETE FROM \"METRIC_VALUES\" WHERE TRUE;\n"
+            + "DELETE FROM \"METRICS\" WHERE TRUE;\n"
+            + "DELETE FROM \"MODULE_DEPENDENCY\" WHERE TRUE;\n"
+            + "DELETE FROM \"COMPONENT__DEPENDENCY\" WHERE TRUE;\n"
+            + "DELETE FROM \"RESOURCES\" WHERE TRUE;\n"
+            + "DELETE FROM \"DECISIONS\" WHERE TRUE;\n"
+            + "DELETE FROM \"RESIZING_ACTIONS\" WHERE TRUE;\n"
+            + "DELETE FROM \"COMPONENT\" WHERE TRUE;\n"
+            + "DELETE FROM \"PROVIDED_RESOURCE\" WHERE TRUE;\n"
+            + "DELETE FROM \"MODULE\" WHERE TRUE;\n"
+            + "DELETE FROM \"DEPLOYMENT\" WHERE TRUE;\n"
+            + "DELETE FROM \"APPLICATION\" WHERE TRUE;\n"
+            + "DELETE FROM \"USER\" WHERE TRUE;";   
                         
     public static void closeConnections() {
         	//close connections
@@ -80,13 +78,8 @@ public class Tables  extends DBConnectable{
 
     public static void clearDB() {
         try {
-            System.out.println("CLEARING CELAR DB");
-            Class.forName(DRIVER);
-
-            Connection con = DriverManager
-                    .getConnection("jdbc:mysql://localhost/"
-                    +DB_NAME+"?"
-                    + "user="+USER);
+            
+            Connection con = getConnection();
 
             //TODO: this was supposed to read the clear sql script from file
 //            File file = new File("src/java/database/clear_celar_db.sql");

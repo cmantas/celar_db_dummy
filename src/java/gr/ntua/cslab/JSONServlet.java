@@ -21,28 +21,27 @@ import org.json.JSONObject;
 public abstract class JSONServlet extends HttpServlet {
 
     //response types
-    public final static byte JSON_TYPE=1;
-    public final static byte HTML_TYPE=2;
-    public final static byte INT_TYPE=3;
+    public final static byte JSON_TYPE = 1;
+    public final static byte HTML_TYPE = 2;
+    public final static byte INT_TYPE = 3;
 
     /**
      * indentation factor for the response
      */
-    public final static byte INDENT=2;
+    public final static byte INDENT = 2;
 
     /**
-     *the output writer
+     * the output writer
      */
     private PrintWriter out;
 
     protected HttpServletRequest request;
-       
-   //================== abstract  methods ===============================
 
+   //======================= abstract  methods ===============================
     /**
      * @return the type of the response
      */
-           public  abstract byte getType();
+    public abstract byte getType();
 
     /**
      * @return the JSON parameters expected by this servlet as input
@@ -55,112 +54,107 @@ public abstract class JSONServlet extends HttpServlet {
     public abstract Iterable<String> requestStringParameters();
 
     /**
-     *Processes the incoming request (as 2 maps of params-> values)
+     * Processes the incoming request (as 2 maps of params-> values)
+     *
      * @param inputJSONParameters the input JSON parameters
      * @param inputStringParameters the rest of the input parameters
      */
     public abstract void processRequest(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters);
 
-
+    
+  //========================  JSON Servlet core methods  ======================  
+  
     /**
      * prints a json object in the output
-     * @param jo 
+     *
+     * @param jo the JSON Object to print
      */
-    public void print(JSONObject jo){
-        printString(jo.toString(INDENT));
-    }
-    
+    public void print(JSONObject jo) {printString(jo.toString(INDENT));}
+
     /**
      * prints a string object in the output
-     * @param str 
+     *
+     * @param str
      */
-    public void print(String str){
-        printString(str);
-    }
-    
-    public void print(int i){ printString(""+i);}
-    
-    public void printString(String msg){
-           out.println(msg);
-       }
-    
-    public void printInfo(){
-                print("<html>\n<h2>servlet info</h2>");
-                print(this.getServletInfo());
-                print("<h3>JSON Parameters</h3>\n<ul>");
-                for(String param : requestJSONParameters()){
-                    print("\t<li>"+param+"</li>");
-                }
-                print("</ul>\n<h3>String parameters</h3>\n<ul>");
-                for(String param : requestStringParameters()){
-                    print("\t<li>"+param+"</li>");
-                }
-                print("</ul>\n<h3>return type</h3>");
-                 switch(getType()){
-                   case JSON_TYPE:  print("JSON");   break;
-                   case HTML_TYPE:  print("(X)HTML");break;
-                   case INT_TYPE:   print("Integer");break;
-                   default: print("text");
-           }
-                print("</html>");
+    public void print(String str) { printString(str); }
+    public void print(int i) { printString("" + i); }
+    public void printString(String msg) {  out.println(msg); }
+
+    /**
+     * prints the info of this servlet in an HTML format
+     */
+    public void printInfo() {
+        print("<html>\n<h2>servlet info</h2>");
+        print(this.getServletInfo());
+        print("<h3>JSON Parameters</h3>\n<ul>");
+        for (String param : requestJSONParameters()) {
+            print("\t<li>" + param + "</li>");
+        }
+        print("</ul>\n<h3>String parameters</h3>\n<ul>");
+        for (String param : requestStringParameters()) {
+            print("\t<li>" + param + "</li>");
+        }
+        print("</ul>\n<h3>return type</h3>");
+        switch (getType()) {
+            case JSON_TYPE: print("JSON"); break;
+            case HTML_TYPE:  print("(X)HTML"); break;
+            case INT_TYPE:  print("Integer"); break;
+            default: print("text");
+        }
+        print("</html>");
     }
 
     /**
      * @param type the byte type of the servlet
      * @return The web MIME type of this page
      */
-    protected String responseType(byte type){
-           switch(type){
-                   case JSON_TYPE: 
-                       return "text;charset=UTF-8";
-                   case HTML_TYPE:
-                       return "text/html;charset=UTF-8";
-                   default:
-                       return "text;charset=UTF-8";
-           }
-       }
+    protected String responseType(byte type) {
+        switch (type) {
+            case JSON_TYPE: return "text;charset=UTF-8";
+            case HTML_TYPE: return "text/html;charset=UTF-8";
+            default:        return "text;charset=UTF-8";
+        }
+    }
 
     /**
      *
      * @param parameter
      * @return
      */
-    protected String getStringParameter(String parameter){
-           String param = request.getParameter(parameter);
-           if(param==null)
-               print("input String parameter \""+ parameter + "\" is missing");
-           return param;
-    
-}
+    protected String getStringParameter(String parameter) {
+        String param = request.getParameter(parameter);
+        if (param == null)  print("input String parameter \"" + parameter + "\" is missing");
+        return param;
+
+    }
 
     /**
      *
      * @param parameter
      * @return
      */
-    public JSONObject getJSONParameter( String parameter){
-           try{
-               String paramStr=request.getParameter(parameter);
-               if(paramStr==null)
-                 print("input JSON parameter \""+ parameter + "\" is missing");
-               return new JSONObject(paramStr);
-           }
-           catch(JSONException je){
-               out.println("invalid json format for argument: "+parameter);
-           }
-           return null;
-       }
+    public JSONObject getJSONParameter(String parameter) {
+        try {
+            String paramStr = request.getParameter(parameter);
+            if (paramStr == null) {
+                print("input JSON parameter \"" + parameter + "\" is missing");
+            }
+            return new JSONObject(paramStr);
+        } catch (JSONException je) {
+            out.println("invalid json format for argument: " + parameter);
+        }
+        return null;
+    }
 
-	/**
-	 * Processes requests for both HTTP
-	 * <code>GET</code> and
-	 * <code>POST</code> methods.
-	 *
-	 * @param request servlet request
-	 * @param response servlet response
-	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
-	 */
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.request = request;
@@ -168,14 +162,12 @@ public abstract class JSONServlet extends HttpServlet {
         out = response.getWriter();
 
         try {
-            
             //check if the info parameter is given and if so just print the info
-            if (request.getParameter("info")!=null){
+            if (request.getParameter("info") != null) {
                 response.setContentType(responseType(HTML_TYPE));
                 printInfo();
                 return;
             }
-
             //load all of the json parameters
             Map<String, JSONObject> inputJSONParameters = new java.util.HashMap(5);
             if (requestJSONParameters() != null) {
@@ -190,7 +182,7 @@ public abstract class JSONServlet extends HttpServlet {
                     inputStringParams.put(param, getStringParameter(param));
                 }
             }
-
+            //actually process the input parameters after parsing and checking them
             processRequest(inputJSONParameters, inputStringParams);
         } catch (Exception e) {
             print("ERROR parsing input parameters - check their validity");
@@ -199,9 +191,17 @@ public abstract class JSONServlet extends HttpServlet {
         }
     }
 
-	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    abstract public String getServletInfo();
+
+	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. ">
 	/**
-	 * Handles the HTTP
+	 * Handles the HTTP request
 	 * <code>GET</code> method.
 	 *
 	 * @param request servlet request
@@ -228,13 +228,7 @@ public abstract class JSONServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		processRequest(request, response);
-	}
+	}// </editor-fold>
 
-	/**
-	 * Returns a short description of the servlet.
-	 *
-	 * @return a String containing servlet description
-	 */
-	@Override
-	abstract public String getServletInfo() ;
+
 }
