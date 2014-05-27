@@ -128,7 +128,7 @@ public abstract class Table extends DBConnectable{
             statement = this.connection.createStatement();
             ResultSet set = statement.executeQuery(query);
             set.next();
-            String result = set.getString("MAX(" + field + ")");
+            String result = set.getString("max");
             set.close();
             statement.close();
             return result;
