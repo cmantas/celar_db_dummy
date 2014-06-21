@@ -33,7 +33,7 @@ public class ModuleDependencyTable extends Table {
 	 * @param MODULE_to_id the module the dependency is to (requirement)
 	 * @param type the type of the moduleDependency
 	 */
-	public boolean insertModuleDependency(int MODULE_from_id, int MODULE_to_id, String type){
+	public boolean insertModuleDependency(int MODULE_from_id, int MODULE_to_id, String type) throws DBException{
 		Map<String, String> data = new java.util.TreeMap<String, String>();
 		data.put("MODULE_from_id", Integer.toString(MODULE_from_id));
 		data.put("MODULE_to_id",Integer.toString(MODULE_to_id));

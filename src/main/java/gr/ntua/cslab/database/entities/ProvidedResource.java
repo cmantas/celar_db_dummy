@@ -1,5 +1,6 @@
 package gr.ntua.cslab.database.entities;
 
+import gr.ntua.cslab.database.DBException;
 import gr.ntua.cslab.database.ProvidedResourceTable;
 import gr.ntua.cslab.database.Tables;
 import static gr.ntua.cslab.database.Tables.provResTable;
@@ -37,7 +38,7 @@ public class ProvidedResource extends DBIDEntity {
 	 * @param id
 	 * @param table 
 	 */
-	public ProvidedResource(int id){
+	public ProvidedResource(int id) throws DBException{
 		super(id, provResTable);
 	}
 	
@@ -56,7 +57,7 @@ public class ProvidedResource extends DBIDEntity {
 	 * @return true if successful false if not 
 	 */
 	@Override
-	public boolean store() {
+	public boolean store() throws DBException {
 		ProvidedResourceTable t=(ProvidedResourceTable) table;
 		this.id=t.insertProvidedResource(resourceTypeId, name);
 		if(id!=0){
@@ -98,7 +99,7 @@ public class ProvidedResource extends DBIDEntity {
      * gets all the provided resources of the given type
      * 
     */
-    static List<ProvidedResource> getByType(String resourceTypeName){
+    static List<ProvidedResource> getByType(String resourceTypeName) throws DBException{
         List<ProvidedResource> prs=new java.util.LinkedList();
         int typeId = Tables.resTypeTable.getTypeid(resourceTypeName);
         List<Integer> pr_ids= provResTable.getIdsForSelection("RESOURCE_TYPE_id", ""+typeId);

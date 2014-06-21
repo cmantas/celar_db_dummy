@@ -4,6 +4,7 @@ package gr.ntua.cslab;
  *
  * @author cmantas
  */
+import gr.ntua.cslab.database.DBException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
@@ -59,7 +60,8 @@ public abstract class JSONServlet extends HttpServlet {
      * @param inputJSONParameters the input JSON parameters
      * @param inputStringParameters the rest of the input parameters
      */
-    public abstract void processRequest(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters);
+    public abstract void processRequest(Map<String, JSONObject> inputJSONParameters,
+            Map<String, String> inputStringParameters) throws DBException;
 
     
   //========================  JSON Servlet core methods  ======================  
@@ -123,8 +125,14 @@ public abstract class JSONServlet extends HttpServlet {
      */
     protected String getStringParameter(String parameter) {
         String param = request.getParameter(parameter);
-        if (param == null)  print("input String parameter \"" + parameter + "\" is missing");
+        if (param == null){
+            JSONObject rv = new JSONObject();
+            rv.put("error_type", "missing parameter");
+            rv.put("error_details", "parameter '"+parameter + "'is missing from string input");
+            print(rv);
+        }
         return param;
+        
 
     }
 
@@ -137,7 +145,11 @@ public abstract class JSONServlet extends HttpServlet {
         try {
             String paramStr = request.getParameter(parameter);
             if (paramStr == null) {
-                print("input JSON parameter \"" + parameter + "\" is missing");
+                 JSONObject rv = new JSONObject();
+                rv.put("error_type", "missing parameter");
+                rv.put("error_details", "parameter '"+parameter + "' is missing from JSON input");
+                print(rv);
+                return null;
             }
             return new JSONObject(paramStr);
         } catch (JSONException je) {
@@ -172,21 +184,34 @@ public abstract class JSONServlet extends HttpServlet {
             Map<String, JSONObject> inputJSONParameters = new java.util.HashMap(5);
             if (requestJSONParameters() != null) {
                 for (String param : requestJSONParameters()) {
-                    inputJSONParameters.put(param, getJSONParameter(param));
+                    JSONObject j = getJSONParameter(param);
+                    if(j==null) return;
+                    inputJSONParameters.put(param, j);
                 }
             }
             //load the rest of the parameters
             Map<String, String> inputStringParams = new java.util.HashMap(5);
             if (requestStringParameters() != null) {
                 for (String param : requestStringParameters()) {
-                    inputStringParams.put(param, getStringParameter(param));
+                    String p =getStringParameter(param);
+                    if (p==null) return;
+                    inputStringParams.put(param, p);
                 }
             }
-            //actually process the input parameters after parsing and checking them
-            processRequest(inputJSONParameters, inputStringParams);
-        } catch (Exception e) {
-            print("ERROR parsing input parameters - check their validity");
-            e.printStackTrace();
+            try{
+                //actually process the input parameters after parsing and checking them
+                processRequest(inputJSONParameters, inputStringParams);
+            }catch(DBException e){
+                JSONObject rv = new JSONObject();
+                rv.put("error_type", e.getType());
+                rv.put("error_details", e.getDetail());
+                print(rv);
+            }
+        } catch (JSONException e) {
+            JSONObject rv = new JSONObject();
+                rv.put("error_type", "invalid JSON");
+                rv.put("error_details","error parsing JSON Input");
+                print(rv);
         } finally {
             out.close();
         }

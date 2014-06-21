@@ -1,5 +1,6 @@
 package gr.ntua.cslab.database.entities;
 
+import gr.ntua.cslab.database.DBException;
 import gr.ntua.cslab.database.MetricsTable;
 import gr.ntua.cslab.database.Tables;
 import java.sql.Timestamp;
@@ -36,7 +37,7 @@ public class Metric extends DBIDEntity{
 	 * Creates an previously stored resource directly from  the database
 	 * @param id
 	 */
-	public Metric(int id){
+	public Metric(int id) throws DBException{
 		super(id, Tables.metricsTable);
 	}
 	
@@ -55,7 +56,7 @@ public class Metric extends DBIDEntity{
 	 * @return true if successful false if not 
 	 */
 	@Override
-	public boolean store() {
+	public boolean store()  throws DBException{
 		MetricsTable t=(MetricsTable) table;
 		this.id=t.insertMetric(componentId, timestamp);
 		if(id!=0){

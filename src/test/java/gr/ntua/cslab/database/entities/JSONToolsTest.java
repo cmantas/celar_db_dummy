@@ -6,6 +6,7 @@
 
 package gr.ntua.cslab.database.entities;
 
+import gr.ntua.cslab.database.DBException;
 import static gr.ntua.cslab.database.Tables.clearDB;
 import static gr.ntua.cslab.database.entities.JSONTools.*;
 import java.io.IOException;
@@ -71,7 +72,7 @@ public class JSONToolsTest {
     static JSONObject appDescriptionJson;
     
     @Test
-    public void test_01_ExportApplicationDescription() {
+    public void test_01_ExportApplicationDescription() throws DBException {
         try {
             //create, save and retrieve an app
             Application test_app = new Application("test_application", new Timestamp(System.currentTimeMillis()), chris);
@@ -124,7 +125,7 @@ public class JSONToolsTest {
     
     
     @Test
-    public void test_04_ParseApplicationDeploymentConfig() {
+    public void test_04_ParseApplicationDeploymentConfig() throws DBException {
         try {
             //need to parse the Application Description before you parse the configuration
             test_03_ParseApplicationDescription_from_file();
@@ -134,6 +135,11 @@ public class JSONToolsTest {
             System.out.println("\n ======================= Test Deployment Configuration from file  ========================== ");
             JSONObject appDeploymentConfig = loadJSONObjectFromFile("src/main/resources/data_files/application_configuration.json");
             parseApplicationDeploymentConfig(appDeploymentConfig, app, deployment, true);
+            
+            JSONObject config = exportApplicationConfiguration(app, new Timestamp(System.currentTimeMillis()));
+            System.out.println(config.toString(3));
+            
+            
         } catch (IOException e) {
             System.err.println(e.getMessage());
             fail("failed to import an application description from JSON");

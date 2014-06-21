@@ -1,5 +1,6 @@
 package gr.ntua.cslab.database.entities;
 
+import gr.ntua.cslab.database.DBException;
 import gr.ntua.cslab.database.ResourcesTable;
 import gr.ntua.cslab.database.Tables;
 import java.sql.Timestamp;
@@ -47,7 +48,7 @@ public class Resource extends DBIDEntity {
 	 * Creates an previously stored resource directly from  the database
 	 * @param id
 	 */
-	public Resource(int id){
+	public Resource(int id) throws DBException{
 		super(id, Tables.resTable);
 	}
 	
@@ -67,7 +68,7 @@ public class Resource extends DBIDEntity {
 	 * @return true if successful false if not 
 	 */
 	@Override
-	public boolean store() {
+	public boolean store()  throws DBException{
 		ResourcesTable t=(ResourcesTable) table;
 		this.id=t.insertResource(deploymentId, componentId,
 				providedResourceId, startTime, endTime);

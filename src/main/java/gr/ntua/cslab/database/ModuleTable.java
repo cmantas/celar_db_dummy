@@ -31,7 +31,7 @@ public class ModuleTable extends IDTable {
 	 * @param name the name of the module
      * @return true if success
 	 */
-	public boolean insertModule(int id, String APPLICATION_id, String name){
+	public boolean insertModule(int id, String APPLICATION_id, String name) throws DBException{
 		Map<String, String> data = new java.util.TreeMap<String, String>();
 		data.put("id", Integer.toString(id));
 		data.put("APPLICATION_id",APPLICATION_id);
@@ -47,7 +47,7 @@ public class ModuleTable extends IDTable {
 	 * @param name the name of the module
 	 * @return the given id if successful, -1 if not. 
 	 */
-	public int insertModule(String APPLICATION_id, String name){
+	public int insertModule(String APPLICATION_id, String name) throws DBException{
 		int id=this.getNextId();
 		if(insertModule(id,APPLICATION_id, name))
 			return id;
@@ -55,7 +55,7 @@ public class ModuleTable extends IDTable {
 	}
 
 
-	public Module getModule(int id){
+	public Module getModule(int id) throws DBException{
 		return new Module(id);	
 	}
         
@@ -63,7 +63,7 @@ public class ModuleTable extends IDTable {
          * Retrieves all the modules for the app with the given id
          * @param appId 
          */
-        public List<Module> getAppModules(String appId) {  
+        public List<Module> getAppModules(String appId) throws DBException {  
             LinkedList<Module> results=new LinkedList();
             String field="id";
             String testField="APPLICATION_id";            

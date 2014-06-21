@@ -26,7 +26,7 @@ public class ResizingActionsTable extends IDTable {
 	 * @param type the type of the resizing action 
 	 * @return true if success false if not
 	 */
-	public boolean insertResizingAction(int id, int MODULE_id, int COMPONENT_id, String type){
+	public boolean insertResizingAction(int id, int MODULE_id, int COMPONENT_id, String type) throws DBException{
 		Map<String, String> data = new java.util.TreeMap<String, String>();
 		data.put("id", Integer.toString(id));
 		data.put("MODULE_id", Integer.toString(MODULE_id));
@@ -43,7 +43,7 @@ public class ResizingActionsTable extends IDTable {
 	 * @param name the name of the component
 	 * @return the given id if successful, -1 if not. 
 	 */
-	public int insertResizingAction(int MODULE_id, int COMPONENT_id, String type){
+	public int insertResizingAction(int MODULE_id, int COMPONENT_id, String type) throws DBException{
 		int id=this.getNextId();
 		if(insertResizingAction(id, MODULE_id, COMPONENT_id, type))
 			return id;

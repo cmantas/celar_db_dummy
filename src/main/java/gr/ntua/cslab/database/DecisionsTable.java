@@ -27,7 +27,7 @@ public class DecisionsTable extends Table {
 	 * @param RECISING_ACTION_id the resizing action taken by this decision
 	 * @param size the size/multiplicity of this action
 	 */
-	public boolean insertDecision(Timestamp timestamp, int RECISING_ACTION_id, int size){
+	public boolean insertDecision(Timestamp timestamp, int RECISING_ACTION_id, int size) throws DBException{
 		Map<String, String> data = new java.util.TreeMap<String, String>();
 		data.put("timestamp", timestamp.toString());
 		data.put("RECISING_ACTION_id", Integer.toString(RECISING_ACTION_id));

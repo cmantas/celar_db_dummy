@@ -1,5 +1,6 @@
 package gr.ntua.cslab.database.entities;
 
+import gr.ntua.cslab.database.DBException;
 import gr.ntua.cslab.database.ModuleTable;
 import gr.ntua.cslab.database.Tables;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class Module extends DBIDEntity {
 	 * @param id
 	 * @param table 
 	 */
-	public Module(int id){
+	public Module(int id) throws DBException{
 		super(id, Tables.moduleTable);
 	}
 	
@@ -56,7 +57,7 @@ public class Module extends DBIDEntity {
 	 * @return true if successful false if not 
 	 */
 	@Override
-	public boolean store() {
+	public boolean store()  throws DBException{
 		ModuleTable t=(ModuleTable) table;
 		this.id=t.insertModule(applicationId, name);
 		if(id>=0){

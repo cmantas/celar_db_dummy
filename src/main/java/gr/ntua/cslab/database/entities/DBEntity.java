@@ -4,6 +4,7 @@
  */
 package gr.ntua.cslab.database.entities;
 
+import gr.ntua.cslab.database.DBException;
 import gr.ntua.cslab.database.Table;
 import java.util.Map;
 import org.json.JSONObject;
@@ -67,7 +68,7 @@ public abstract class DBEntity {
 	 * Stores the entity in the appropriate Database Table
 	 * @return
 	 */
-	abstract public boolean store();
+	abstract public boolean store() throws DBException;
         
     /**
      * Converts the Entity to a JSON representation

@@ -4,6 +4,7 @@
  */
 package gr.ntua.cslab.database.entities;
 
+import gr.ntua.cslab.database.DBException;
 import gr.ntua.cslab.database.IDTable;
 import java.util.Map;
 import org.json.JSONObject;
@@ -29,9 +30,12 @@ public abstract class DBIDEntity extends DBEntity {
 		super(fields, table);
 	}
 
-	public DBIDEntity(int id,IDTable table){
+	public DBIDEntity(int id,IDTable table) throws DBException{
 		this.table=table;
 		Map <String,String> fields=table.getById(id);
+                System.out.println(fields);
+                if (fields==null)
+                    throw new DBException(DBException.NO_SUCH_ENTRY, this.getClass().getName()+" with id="+id+" does not exist in the DB");
 		fromMap(fields);
 		modified=false;
 	}

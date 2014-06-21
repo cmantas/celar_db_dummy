@@ -1,5 +1,6 @@
 package gr.ntua.cslab.database.entities;
 
+import gr.ntua.cslab.database.DBException;
 import gr.ntua.cslab.database.SpecsTable;
 import gr.ntua.cslab.database.Tables;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class Spec extends DBIDEntity{
 	 * Creates an previously stored spec directly from  the database
 	 * @param id
 	 */
-	public Spec(int id){
+	public Spec(int id) throws DBException{
 		super(id, Tables.specsTable);
 	}
 	
@@ -58,7 +59,7 @@ public class Spec extends DBIDEntity{
 	 * @return true if successful false if not 
 	 */
 	@Override
-	public boolean store() {
+	public boolean store() throws DBException {
 		SpecsTable t=(SpecsTable) table;
 		this.id=t.insertSpecs(providedResourceId, property, value);
 		if(id!=0){

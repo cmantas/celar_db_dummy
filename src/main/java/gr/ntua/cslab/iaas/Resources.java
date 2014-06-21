@@ -1,5 +1,6 @@
 package gr.ntua.cslab.iaas;
 import gr.ntua.cslab.JSONServlet;
+import gr.ntua.cslab.database.DBException;
 import static gr.ntua.cslab.database.entities.JSONTools.exportProvidedResources;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public class Resources extends JSONServlet {
     }
 
     @Override
-    public void processRequest(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters) {
+    public void processRequest(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters) throws DBException {
         String type=inputStringParameters.get("type");
         print(exportProvidedResources(type));
     }

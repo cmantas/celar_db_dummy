@@ -1,5 +1,6 @@
 package gr.ntua.cslab.deployment;
 
+import gr.ntua.cslab.database.DBException;
 import gr.ntua.cslab.database.entities.User;
 import java.util.Arrays;
 import java.util.Map;
@@ -23,7 +24,8 @@ public class AddUser extends gr.ntua.cslab.JSONServlet {
     public Iterable<String> requestStringParameters() {return new java.util.LinkedList();}
 
     @Override
-    public void processRequest(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters) {
+    public void processRequest(Map<String, JSONObject> inputJSONParameters,
+            Map<String, String> inputStringParameters) throws DBException{
          JSONObject userj=inputJSONParameters.get("user").getJSONObject("user");
          User user=new User(userj);
          user.store();

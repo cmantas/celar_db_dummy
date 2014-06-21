@@ -4,10 +4,13 @@
  */
 package gr.ntua.cslab.metrics;
 
+import gr.ntua.cslab.database.DBException;
 import gr.ntua.cslab.database.entities.Metric;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +34,7 @@ public class Get extends HttpServlet {
 	 * @throws IOException if an I/O error occurs
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+		throws ServletException, IOException, DBException {
 		response.setContentType("text;charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		try {
@@ -61,7 +64,11 @@ public class Get extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
-		processRequest(request, response);
+            try {
+                processRequest(request, response);
+            } catch (DBException ex) {
+                Logger.getLogger(Get.class.getName()).log(Level.SEVERE, null, ex);
+            }
 	}
 
 	/**
@@ -76,7 +83,11 @@ public class Get extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
-		processRequest(request, response);
+            try {
+                processRequest(request, response);
+            } catch (DBException ex) {
+                Logger.getLogger(Get.class.getName()).log(Level.SEVERE, null, ex);
+            }
 	}
 
 	/**

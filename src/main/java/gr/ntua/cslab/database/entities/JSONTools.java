@@ -1,5 +1,6 @@
 package gr.ntua.cslab.database.entities;
 
+import gr.ntua.cslab.database.DBException;
 import gr.ntua.cslab.database.Tables;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,7 +20,7 @@ import org.json.JSONObject;
  */
 public class JSONTools {
 
-    public static JSONArray exportComponentResources(Component comp, Timestamp ts) {
+    public static JSONArray exportComponentResources(Component comp, Timestamp ts) throws DBException {
         List<Resource> resources = //list of all resources in this component
                 Tables.resTable.getComponentResources(comp.getId(), ts);
         System.out.println("resources for componentId:" + comp.getId() + " " + resources);
@@ -31,7 +32,7 @@ public class JSONTools {
         return resoursesJson;
     }
 
-    public static JSONArray exportModuleComponents(Module m, Timestamp ts, boolean includeResources) {
+    public static JSONArray exportModuleComponents(Module m, Timestamp ts, boolean includeResources) throws DBException {
         List<Component> components = //a list of all components in this module
                 Tables.componentTable.getModuleComponents(m.getId());
         System.out.println("components for moduleid:" + m.getId() + " " + components);
@@ -48,7 +49,7 @@ public class JSONTools {
         return componentsJson;
     }
 
-    public static JSONArray exportApplicationModules(Application app, Timestamp ts, boolean includeResources) {
+    public static JSONArray exportApplicationModules(Application app, Timestamp ts, boolean includeResources) throws DBException {
         List<Module> modules = //a lit of all the modules for this app
                 Tables.moduleTable.getAppModules(app.getId());
         JSONArray modulesJson = new JSONArray(); //json array of modules
@@ -63,7 +64,7 @@ public class JSONTools {
     }
     
     
-    public static JSONObject exportApplication(Application app, Timestamp ts, boolean includeResources) {
+    public static JSONObject exportApplication(Application app, Timestamp ts, boolean includeResources) throws DBException {
         JSONObject result = new JSONObject();  //top level json object
         JSONObject applicationJson = app.toJSONObject();
         applicationJson.put("modules", exportApplicationModules(app, ts, includeResources));
@@ -71,16 +72,16 @@ public class JSONTools {
         return result;
     }
         
-    public static JSONObject exportApplicationConfiguration(Application app, Timestamp ts) {
+    public static JSONObject exportApplicationConfiguration(Application app, Timestamp ts) throws DBException {
         return exportApplication(app, ts, true);
     }
     
-    public static JSONObject exportApplicationDescription(Application app, Timestamp ts) {
+    public static JSONObject exportApplicationDescription(Application app, Timestamp ts) throws DBException {
         return exportApplication(app, ts, false);
     }
     
     
-        public static JSONArray exportApplicationDeployments(Application app) {
+        public static JSONArray exportApplicationDeployments(Application app) throws DBException {
         JSONArray deployments = new JSONArray();
         List<Deployment> deps = Tables.deplTable.getApplicationDeployments(app.getId());
         for (Deployment d : deps) {
@@ -89,7 +90,7 @@ public class JSONTools {
         return deployments;
     }
 
-    public static JSONArray exportUserApps(int userId) {
+    public static JSONArray exportUserApps(int userId) throws DBException {
         JSONArray result = new JSONArray();
         List<Application> apps = Tables.appTable.getUserApplications(userId);
         for (Application a : apps) {
@@ -100,13 +101,13 @@ public class JSONTools {
         return result;
     }
 
-    public static JSONObject exportUser(User user) {
+    public static JSONObject exportUser(User user) throws DBException {
         JSONObject userJson = user.toJSONObject();
         userJson.put("applications", exportUserApps(user.getId()));
         return userJson;
     }
     
-    public static JSONObject exportAllUsers(){
+    public static JSONObject exportAllUsers() throws DBException{
         JSONObject result=new JSONObject();
         List<User> users=Tables.usertable.getAllUsers();
         JSONArray usersJ=new JSONArray();
@@ -117,7 +118,7 @@ public class JSONTools {
         return result;
     }
     
-    public static JSONArray exportProvidedResourceSpecs(ProvidedResource pr){
+    public static JSONArray exportProvidedResourceSpecs(ProvidedResource pr) throws DBException{
         List<Spec> specs=Tables.specsTable.getProvidedResourceSpecs(pr);
         JSONArray specsJson=new JSONArray();
         for(Spec s:specs){
@@ -127,7 +128,7 @@ public class JSONTools {
     }
     
     
-    public static JSONObject exportProvidedResource(ProvidedResource pr){
+    public static JSONObject exportProvidedResource(ProvidedResource pr) throws DBException{
         JSONObject prj=pr.toJSONObject();
         prj.put("specs", exportProvidedResourceSpecs(pr));
         return prj;
@@ -135,7 +136,7 @@ public class JSONTools {
     
 
     
-    public static JSONObject exportProvidedResources(String type){
+    public static JSONObject exportProvidedResources(String type) throws DBException{
         JSONObject result=new JSONObject();
         JSONArray prs=new JSONArray();
         List<ProvidedResource> resources=ProvidedResource.getByType(type);
@@ -148,7 +149,7 @@ public class JSONTools {
     
 
     
-    public static JSONObject exportMetric(Metric m){
+    public static JSONObject exportMetric(Metric m) throws DBException{
         JSONObject result=m.toJSONObject();        
         JSONArray mvsJ=new JSONArray();
         List<MetricValue> mvs=Tables.mvTable.getMetricValues(m.getId());
@@ -160,14 +161,14 @@ public class JSONTools {
     }
 
 
-    public static Application findDeploymentApp(int deplId) {
+    public static Application findDeploymentApp(int deplId) throws DBException {
         Deployment depl = new Deployment(deplId);
         Application app = new Application(depl.getApplicationId());
         return app;
     }
     
     
-    public static Application parseApplicationDeploymentConfig(JSONObject topJson, Application app, Deployment depl, boolean store) {
+    public static Application parseApplicationDeploymentConfig(JSONObject topJson, Application app, Deployment depl, boolean store) throws DBException {
         try {
             JSONArray resources = topJson.getJSONObject("configuration").getJSONArray("resources");
             for (int i = 0; i < resources.length(); i++) {
@@ -192,7 +193,7 @@ public class JSONTools {
         return null;
     }
 
-    public static Application parseApplicationDescription(JSONObject topJson, boolean store) {
+    public static Application parseApplicationDescription(JSONObject topJson, boolean store) throws DBException {
         try {
             JSONObject  appJson;
             appJson = topJson.getJSONObject("application");
@@ -256,7 +257,7 @@ public class JSONTools {
     }
     
     
-    public static void parseAppDeployments(JSONObject appJson, boolean store) {
+    public static void parseAppDeployments(JSONObject appJson, boolean store) throws DBException {
         JSONArray deps = appJson.getJSONArray("deployments");
         for (int i = 0; i < deps.length(); i++) {
             JSONObject d = deps.getJSONObject(i);
@@ -266,7 +267,7 @@ public class JSONTools {
         }
     }
     
-    public static void parseUserApps(JSONObject userJson, boolean store){
+    public static void parseUserApps(JSONObject userJson, boolean store) throws DBException{
         if(!userJson.has("applications")) return;
             JSONArray applications=userJson.getJSONArray("applications");
             for (int i = 0; i < applications.length(); i++) {
@@ -281,7 +282,7 @@ public class JSONTools {
 
 
 
-    public static void parseProvidedResources(JSONObject prj, boolean store) {
+    public static void parseProvidedResources(JSONObject prj, boolean store) throws DBException {
         JSONArray resourcesJ=prj.getJSONArray("provided_resources");
         for (int i = 0; i < resourcesJ.length(); i++) {
             JSONObject rj = resourcesJ.getJSONObject(i);
@@ -293,7 +294,7 @@ public class JSONTools {
         }
     }
 
-    private static void parseResourceSpecs(JSONObject rj, boolean store) {
+    private static void parseResourceSpecs(JSONObject rj, boolean store) throws DBException {
         JSONArray specsJ=rj.getJSONArray("specs");
         for(int i=0; i<specsJ.length();i++){
             JSONObject sj=specsJ.getJSONObject(i);

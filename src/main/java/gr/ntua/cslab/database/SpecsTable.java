@@ -28,7 +28,7 @@ public class SpecsTable extends IDTable {
      * @param value the spec property value
 	 * @return true if success false if not
 	 */
-	public boolean insertSpecs(int id, int PROVIDED_RESOURCE_id, String property, String value){
+	public boolean insertSpecs(int id, int PROVIDED_RESOURCE_id, String property, String value) throws DBException{
 		Map<String, String> data = new java.util.TreeMap<String, String>();
 		data.put("id", Integer.toString(id));
 		data.put("PROVIDED_RESOURCE_id",Integer.toString(PROVIDED_RESOURCE_id));
@@ -46,7 +46,7 @@ public class SpecsTable extends IDTable {
      * @param value the spec property value
 	 * @return the given id if successful, -1 if not. 
 	 */
-	public int insertSpecs( int PROVIDED_RESOURCE_id, String property, String value){
+	public int insertSpecs( int PROVIDED_RESOURCE_id, String property, String value) throws DBException{
 		int id=this.getNextId();
 		if(insertSpecs(id, PROVIDED_RESOURCE_id, property, value))
 			return id;
@@ -54,7 +54,7 @@ public class SpecsTable extends IDTable {
 	}
 
         
-        public  List<Spec>getProvidedResourceSpecs(ProvidedResource pr){
+        public  List<Spec>getProvidedResourceSpecs(ProvidedResource pr) throws DBException{
             List<Spec> results=new java.util.LinkedList();
             String field="id";
             String testField="PROVIDED_RESOURCE_id";            

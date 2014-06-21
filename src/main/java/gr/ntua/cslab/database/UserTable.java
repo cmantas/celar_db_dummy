@@ -22,14 +22,14 @@ public class UserTable extends IDTable {
 	 * @param name
      * @return true if everything went smoothly, else it returns false
 	 */
-	public boolean insertUser(int id, String name){
+	public boolean insertUser(int id, String name) throws DBException{
 		Map<String, String> data = new java.util.TreeMap<String, String>();
 		data.put("id", Integer.toString(id));
 		data.put("name",name);
 		return	this.insertData(data);
 	}
 
-	public User getUser(int id){
+	public User getUser(int id) throws DBException{
 		return new User(id);	
 	}
 	
@@ -40,7 +40,7 @@ public class UserTable extends IDTable {
 	 * @param name
 	 * @return the given id if successful, -1 if not. 
 	 */
-	public int insertUser(String name){
+	public int insertUser(String name) throws DBException{
 		int id=this.getNextId();
 		if(insertUser(id,name))
 			return id;
@@ -50,7 +50,7 @@ public class UserTable extends IDTable {
     /**
      * @return a list of all users in the table
      */
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers() throws DBException {
         List<User> results = new java.util.LinkedList();
         List<String> IDs = doSelect("id", "TRUE").get("id");
         //for each of the ids create the user

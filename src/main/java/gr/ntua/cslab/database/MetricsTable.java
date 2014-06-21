@@ -27,7 +27,7 @@ public class MetricsTable extends IDTable {
 	 * @param timestamp the timestamp this metric was submitted 
 	 * @return true if success false if not
 	 */
-	public boolean insertMetric(int id, int COMPONENT_id, Timestamp timestamp ){
+	public boolean insertMetric(int id, int COMPONENT_id, Timestamp timestamp ) throws DBException{
 		Map<String, String> data = new java.util.TreeMap<String, String>();
 		data.put("id", Integer.toString(id));
 		data.put("COMPONENT_id",Integer.toString(COMPONENT_id));
@@ -43,14 +43,14 @@ public class MetricsTable extends IDTable {
 	 * @param timestamp the timestamp this metric was submitted 
 	 * @return the given id if successful, -1 if not. 
 	 */
-	public int insertMetric(int COMPONENT_id, Timestamp timestamp){
+	public int insertMetric(int COMPONENT_id, Timestamp timestamp) throws DBException{
 		int id=this.getNextId();
 		if(insertMetric(id, COMPONENT_id,  timestamp))
 			return id;
 		else return -1;
 	}
 
-	public Metric getMetric(int id){
+	public Metric getMetric(int id) throws DBException{
 		return new  Metric(id);
 	}
         
@@ -58,7 +58,7 @@ public class MetricsTable extends IDTable {
          *Returns a list of all provided resources in the table
          * 
          */
-        public List<Metric> getAllMetrics(){
+        public List<Metric> getAllMetrics() throws DBException{
              List<Metric> results=new java.util.LinkedList();
             List<String> IDs=doSelect("id","TRUE").get("id");
             //for each of the ids create the module

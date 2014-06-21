@@ -1,6 +1,7 @@
 package gr.ntua.cslab.deployment;
 
 import gr.ntua.cslab.JSONServlet;
+import gr.ntua.cslab.database.DBException;
 import gr.ntua.cslab.database.entities.Application;
 import gr.ntua.cslab.database.entities.Deployment;
 import static gr.ntua.cslab.database.entities.JSONTools.parseApplicationDeploymentConfig;
@@ -40,7 +41,7 @@ public class Deploy extends JSONServlet {
     }
 
     @Override
-    public void processRequest(Map<String, JSONObject> inputJSONParams, Map<String, String> inputStringParams) {
+    public void processRequest(Map<String, JSONObject> inputJSONParams, Map<String, String> inputStringParams) throws DBException {
         String appId = inputStringParams.get("ApplicationId").trim();
         try {
             JSONObject in_configuration = inputJSONParams.get("deployment_configuration");

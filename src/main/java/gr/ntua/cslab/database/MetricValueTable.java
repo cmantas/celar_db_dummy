@@ -29,7 +29,7 @@ public class MetricValueTable extends IDTable {
 	 * @param timestamp the timestamp these metric value was sampled at
 	 * @return true if success false if not
 	 */
-	public boolean insertMetricValue(int id, int METRICS_id, int RESOURCES_id, Timestamp timestamp ){
+	public boolean insertMetricValue(int id, int METRICS_id, int RESOURCES_id, Timestamp timestamp ) throws DBException{
 		Map<String, String> data = new java.util.TreeMap<String, String>();
 		data.put("id", Integer.toString(id));
 		data.put("METRICS_id",Integer.toString(METRICS_id));
@@ -47,18 +47,18 @@ public class MetricValueTable extends IDTable {
 	 * @param timestamp the timestamp these metric value was sampled at
 	 * @return the given id if successful, -1 if not. 
 	 */
-	public int insertMetricValue(int METRICS_id, int RESOURCES_id, Timestamp timestamp){
+	public int insertMetricValue(int METRICS_id, int RESOURCES_id, Timestamp timestamp) throws DBException{
 		int id=this.getNextId();
 		if(insertMetricValue(id, METRICS_id,  RESOURCES_id, timestamp))
 			return id;
 		else return -1;
 	}
 
-	public MetricValue getMetricValue(int id){
+	public MetricValue getMetricValue(int id) throws DBException{
 		return new MetricValue(id);
 	}
         
-        public List<MetricValue> getMetricValues(int metricId){
+        public List<MetricValue> getMetricValues(int metricId) throws DBException{
             List<MetricValue> results=new java.util.LinkedList();
             String field="id";
             String testField="METRICS_id";            

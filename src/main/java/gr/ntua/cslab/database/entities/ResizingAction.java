@@ -1,5 +1,6 @@
 package gr.ntua.cslab.database.entities;
 
+import gr.ntua.cslab.database.DBException;
 import gr.ntua.cslab.database.ResizingActionsTable;
 import gr.ntua.cslab.database.Tables;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class ResizingAction extends DBIDEntity{
 	 * @param id
 	 * @param table 
 	 */
-	public ResizingAction(int id){
+	public ResizingAction(int id) throws DBException{
 		super(id, Tables.raTable);
 	}
         
@@ -58,7 +59,7 @@ public class ResizingAction extends DBIDEntity{
 	 * @return true if successful false if not 
 	 */
 	@Override
-	public boolean store() {
+	public boolean store()  throws DBException{
 		ResizingActionsTable t=(ResizingActionsTable) table;
 		this.id=t.insertResizingAction(moduleId, componentId, type);
 		if(id!=0){

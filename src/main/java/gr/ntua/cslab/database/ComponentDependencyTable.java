@@ -29,7 +29,7 @@ public class ComponentDependencyTable extends Table {
 	 * @param COMPONENT_to_id the component the dependency is to (required)
 	 * @param type the type of the componentDependency
 	 */
-	public boolean insertModuleDependency(int COMPONENT_from_id, int COMPONENT_to_id, String type){
+	public boolean insertModuleDependency(int COMPONENT_from_id, int COMPONENT_to_id, String type) throws DBException{
 		Map<String, String> data = new java.util.TreeMap<String, String>();
 		data.put("COMPONENT_from_id", Integer.toString(COMPONENT_from_id));
 		data.put("COMPONENT_to_id",Integer.toString(COMPONENT_to_id));

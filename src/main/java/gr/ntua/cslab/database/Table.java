@@ -149,7 +149,7 @@ public abstract class Table extends DBConnectable{
 	 * @return true if insertion is successful
 	 * 
 	 */
-	public boolean insertData(Map<String, String> data){
+	public boolean insertData(Map<String, String> data) throws DBException{
             String query=null;
 		try {
 			Statement statement=this.connection.createStatement();
@@ -158,10 +158,9 @@ public abstract class Table extends DBConnectable{
 			statement.execute(query);
 			statement.close();
 			return true;
-		} catch (SQLException e) {
-                        System.err.println("ERROR  executing query: \n\t"+query);
-			if(Table.DEBUG) e.printStackTrace();
-			return false;
+		} 
+                catch (SQLException e) {
+                        throw new DBException(e.getMessage());
 		}
 	}
         

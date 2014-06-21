@@ -29,7 +29,7 @@ public class DeploymentTable extends IDTable {
 	 * @param end_time the timestamp this deployment was ended
 	 * @return true if success false if not
 	 */
-	public boolean insertDeployment(int id, String APPLICATION_id, Timestamp start_time, Timestamp end_time){
+	public boolean insertDeployment(int id, String APPLICATION_id, Timestamp start_time, Timestamp end_time) throws DBException{
 		Map<String, String> data = new java.util.TreeMap<String, String>();
 		data.put("id", Integer.toString(id));
 		data.put("APPLICATION_id", APPLICATION_id);
@@ -48,7 +48,7 @@ public class DeploymentTable extends IDTable {
 	 * @param end_time the timestamp this deployment was ended
 	 * @return the given id if successful, -1 if not. 
 	 */
-	public int insertDeployment(String APPLICATION_id, Timestamp start_time, Timestamp end_time){
+	public int insertDeployment(String APPLICATION_id, Timestamp start_time, Timestamp end_time) throws DBException{
 		int id=this.getNextId();
 		if(insertDeployment(id, APPLICATION_id, start_time, end_time))
 			return id;
@@ -56,7 +56,7 @@ public class DeploymentTable extends IDTable {
 	}
 
 
-	public Deployment getDeployment(int id){
+	public Deployment getDeployment(int id) throws DBException{
 		return new Deployment(id);
 	}
         
@@ -65,7 +65,7 @@ public class DeploymentTable extends IDTable {
          * Retrieves all the Applications for the user with the given id
          * @param appId 
          */
-        public  List<Deployment> getApplicationDeployments(String appId) {  
+        public  List<Deployment> getApplicationDeployments(String appId) throws DBException {  
             List<Deployment> results=new java.util.LinkedList();
             String field="id";
             String testField="APPLICATION_id";            

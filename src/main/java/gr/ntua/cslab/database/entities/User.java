@@ -1,5 +1,6 @@
 package gr.ntua.cslab.database.entities;
 
+import gr.ntua.cslab.database.DBException;
 import static gr.ntua.cslab.database.Tables.usertable;
 import gr.ntua.cslab.database.UserTable;
 import java.util.List;
@@ -39,7 +40,7 @@ public class User extends DBIDEntity{
 	 * @param id
 	 * @param table 
 	 */
-	public User(int id){
+	public User(int id) throws DBException{
 		super(id, usertable);
 	}
         
@@ -57,7 +58,7 @@ public class User extends DBIDEntity{
 	 * @return true if successful false if not 
 	 */
 	@Override
-	public boolean store() {
+	public boolean store()  throws DBException{
 		UserTable t=(UserTable) table;
 		this.id=t.insertUser(name);
 		if(id!=0){
@@ -99,7 +100,7 @@ public class User extends DBIDEntity{
      * @param name
      * @return 
     */
-    public static User getByName(String name){
+    public static User getByName(String name) throws DBException{
         List<ResourceType> prs=new java.util.LinkedList();
         List<Integer> pr_ids= usertable.getIdsForSelection("name", ""+name);
         for(Integer id: pr_ids){

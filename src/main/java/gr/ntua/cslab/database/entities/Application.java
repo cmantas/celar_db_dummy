@@ -1,9 +1,12 @@
 package gr.ntua.cslab.database.entities;
 
 import gr.ntua.cslab.database.ApplicationTable;
+import gr.ntua.cslab.database.DBException;
 import gr.ntua.cslab.database.Tables;
 import java.sql.Timestamp;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.JSONObject;
 
 /**
@@ -58,9 +61,11 @@ public class Application extends DBEntity{
 	 * Creates an previously stored application directly from  the database
 	 * @param id
 	 */
-	public Application(String id){
+	public Application(String id) throws DBException{
                 super(Tables.appTable);
 		Map <String,String> fields=((ApplicationTable)table).getById(id);
+                if (fields==null)
+                    throw new DBException(DBException.NO_SUCH_ENTRY, this.getClass().getName()+" with id="+id+" does not exist in the DB");
 		fromMap(fields);
 		modified=false;
 	}
@@ -84,13 +89,17 @@ public class Application extends DBEntity{
 	@Override
 	public boolean store() {
 
-		ApplicationTable t=(ApplicationTable) table;
-		this.id=t.insertApplication(uniqueId, majorVersion, minorVersion, description,userId);
-		if(!id.equals("-1")){
-			this.modified=false;
-			return true;
-		}
-		return false;
+            try {
+                ApplicationTable t=(ApplicationTable) table;
+                this.id=t.insertApplication(uniqueId, majorVersion, minorVersion, description,userId);
+                if(!id.equals("-1")){
+                    this.modified=false;
+                    return true;
+                } 
+            } catch (DBException ex) {
+                Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return false;
 	}
 
 	@Override

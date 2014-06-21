@@ -33,7 +33,7 @@ public class ResourcesTable extends IDTable {
 	 * @return true if success false if not
 	 */
 	public boolean insertResource(int id, int DEPLOYMENT_id, int COMPONENT_id,
-		int PROVIDED_RESOURCE_id, Timestamp start_time, Timestamp end_time){
+		int PROVIDED_RESOURCE_id, Timestamp start_time, Timestamp end_time) throws DBException{
 		Map<String, String> data = new java.util.TreeMap<String, String>();
 		data.put("id", Integer.toString(id));
 		data.put("DEPLOYMENT_id", Integer.toString(DEPLOYMENT_id));
@@ -54,7 +54,7 @@ public class ResourcesTable extends IDTable {
 	 * @return the given id if successful, -1 if not. 
 	 */
 	public int insertResource( int DEPLOYMENT_id, int COMPONENT_id,
-		int PROVIDED_RESOURCE_id, Timestamp start_time, Timestamp end_time){
+		int PROVIDED_RESOURCE_id, Timestamp start_time, Timestamp end_time) throws DBException{
 		int id=this.getNextId();
 		if(insertResource(id, DEPLOYMENT_id, COMPONENT_id,
 			PROVIDED_RESOURCE_id, start_time, end_time))
@@ -62,7 +62,7 @@ public class ResourcesTable extends IDTable {
 		else return -1;
 	}
 
-	public Resource getResource(int id){
+	public Resource getResource(int id) throws DBException{
 		return new Resource(id);
 	}
         
@@ -70,7 +70,7 @@ public class ResourcesTable extends IDTable {
          * Retrieves all the components for the module with the given id
          * @param moduleId
          */
-        public List<Resource> getComponentResources(int ComponentId, Timestamp ts) {  
+        public List<Resource> getComponentResources(int ComponentId, Timestamp ts) throws DBException {  
             List<Resource> results=new LinkedList();
             String field="id";
             String testField="COMPONENT_id";

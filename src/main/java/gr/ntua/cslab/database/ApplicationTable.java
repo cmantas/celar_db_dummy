@@ -41,7 +41,7 @@ public class ApplicationTable extends Table {
      * @return success or not
      */
     public boolean insertApplication(String id,  int uniqueId, int majorVersion,
-            int minorVersion, String description,Timestamp submitted, int USER_id) {
+            int minorVersion, String description,Timestamp submitted, int USER_id) throws DBException {
         Map<String, String> data = new java.util.TreeMap<String, String>();
         data.put("id", id);
         data.put("unique_id", Integer.toString(uniqueId));
@@ -76,12 +76,12 @@ public class ApplicationTable extends Table {
      * @param majorVersion
      * @param minorVersion
      * @param description the application description
-     * @param submitted the time submitted
      * @param USER_id the foreign key of the owner
      * @return the given id if successful, -1 if not.
+     * @throws gr.ntua.cslab.database.DBException
      */
     public String insertApplication(int uniqueId, int majorVersion, int minorVersion,
-                                    String description, int USER_id) {
+                                    String description, int USER_id) throws DBException {
         if(uniqueId==0){
              String prevMax = this.maxValue("unique_id");
              uniqueId= prevMax!=null? Integer.parseInt(prevMax)+1:1;
@@ -95,7 +95,7 @@ public class ApplicationTable extends Table {
     }
 
 
-    public Application getApplication(String id) {
+    public Application getApplication(String id) throws DBException {
         return new Application(id);
     }
 
@@ -105,7 +105,7 @@ public class ApplicationTable extends Table {
      * @param userId
      * @return
      */
-    public List<Application> getUserApplications(int userId) {
+    public List<Application> getUserApplications(int userId) throws DBException {
         List<Application> results = new java.util.LinkedList();
         String field = "id";
         String testField = "USER_id";
@@ -165,7 +165,9 @@ public class ApplicationTable extends Table {
 			ResultSet rs = statement.executeQuery(query);
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int columnCount = rsmd.getColumnCount();
-			rs.next();
+			if (! rs.next())
+                            throw new DBException(DBException.NO_SUCH_ENTRY, "apptable does not contain: "+id);
+
 			for (int i = 1; i < columnCount + 1; i++) {
 				String name = rsmd.getColumnName(i);
 				String value = decode(rs.getString(name));

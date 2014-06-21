@@ -5,6 +5,7 @@
 package gr.ntua.cslab.database.entities;
 
 import gr.ntua.cslab.database.ComponentDependencyTable;
+import gr.ntua.cslab.database.DBException;
 import gr.ntua.cslab.database.ModuleDependencyTable;
 import gr.ntua.cslab.database.Tables;
 import java.util.Map;
@@ -68,7 +69,7 @@ public class Dependency extends DBEntity{
     }
 
     @Override
-    public boolean store() {
+    public boolean store()  throws DBException{
         if(entity.equals("COMPONENT")){
         ComponentDependencyTable t=(ComponentDependencyTable) table;
 	return t.insertModuleDependency(from, to, type);

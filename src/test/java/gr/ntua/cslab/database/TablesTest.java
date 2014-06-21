@@ -7,11 +7,13 @@
 package gr.ntua.cslab.database;
 
 import static gr.ntua.cslab.database.Tables.*;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 import org.junit.After;
-import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  *
@@ -32,7 +34,8 @@ public class TablesTest {
      * Test of closeConnections method, of class Tables.
      */
     @Test
-    public void testTables() {
+    @Ignore
+    public void testTables() throws SQLException {
         	// insert data in the tables
 		System.out.println("===================  TEST TABLES  =====================");
 		//create a user
@@ -105,5 +108,9 @@ public class TablesTest {
 		assertTrue("metric value exists in table",mvTable.exists(mvId));
     }
 
+    
+
 
 }
+    
+

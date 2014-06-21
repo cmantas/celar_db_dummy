@@ -1,5 +1,6 @@
 package gr.ntua.cslab.database.entities;
 
+import gr.ntua.cslab.database.DBException;
 import gr.ntua.cslab.database.ResourceTypeTable;
 import static gr.ntua.cslab.database.Tables.resTypeTable;
 import java.util.List;
@@ -30,7 +31,7 @@ public class ResourceType extends DBIDEntity {
 	 * Creates an previously stored ResourceType from its id
 	 * @param id 
 	 */
-	public ResourceType(int id){
+	public ResourceType(int id) throws DBException{
 		super(id, resTypeTable);
 	}
 	
@@ -49,9 +50,10 @@ public class ResourceType extends DBIDEntity {
 	 * @return true if successful false if not 
 	 */
 	@Override
-	public boolean store() {
+	public boolean store() throws DBException
+{
 		ResourceTypeTable t=(ResourceTypeTable) table;
-		this.id=t.insertResourceType(name);
+		this.id=t.insertResourceType(name) ;
 		if(id!=0){
 			this.modified=false;
 			return true;
@@ -89,9 +91,11 @@ public class ResourceType extends DBIDEntity {
      * @param typeName
      * @return 
     */
-    public static ResourceType getByName(String typeName){
+    public static ResourceType getByName(String typeName) throws DBException{
         List<ResourceType> prs=new java.util.LinkedList();
         List<Integer> pr_ids= resTypeTable.getIdsForSelection("type", ""+typeName);
+        if (pr_ids.isEmpty())
+            throw new DBException(DBException.NO_SUCH_ENTRY, "No resource type found with name:"+typeName);
         for(Integer id: pr_ids){
             return new ResourceType(id);
         }

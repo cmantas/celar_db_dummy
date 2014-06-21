@@ -1,6 +1,7 @@
 package gr.ntua.cslab.database.entities;
 
 import gr.ntua.cslab.database.ComponentTable;
+import gr.ntua.cslab.database.DBException;
 import gr.ntua.cslab.database.Tables;
 import java.util.Map;
 import org.json.JSONObject;
@@ -44,7 +45,7 @@ public class Component extends DBIDEntity {
      *
      * @param id
      */
-    public Component(int id) {
+    public Component(int id) throws DBException {
         super(id, Tables.componentTable);
     }
 
@@ -64,7 +65,7 @@ public class Component extends DBIDEntity {
      * @return true if successful false if not
      */
     @Override
-    public boolean store() {
+    public boolean store() throws DBException{
         ComponentTable t = (ComponentTable) table;
         this.id = t.insertComponent(description,moduleId, resourceTypeId);
         if (id != 0) {
@@ -105,7 +106,7 @@ public class Component extends DBIDEntity {
         this.description=jo.getString("description");
     }
     
-    static Component getByDescription(String description) throws NotInDBaseException {
+    static Component getByDescription(String description) throws NotInDBaseException, DBException {
         return Tables.componentTable.getComponentByDescription(description);
     }
 }

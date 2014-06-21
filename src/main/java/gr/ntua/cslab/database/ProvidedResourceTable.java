@@ -26,7 +26,7 @@ public class ProvidedResourceTable extends IDTable {
 	 * @param description the description of this resource
 	 * @return true if success false if not
 	 */
-	public boolean insertProvidedResource(int id, int resourceTypeId, String name){
+	public boolean insertProvidedResource(int id, int resourceTypeId, String name) throws DBException{
 		Map<String, String> data = new java.util.TreeMap<String, String>();
 		data.put("id", Integer.toString(id));
 		data.put("name",name);
@@ -44,14 +44,14 @@ public class ProvidedResourceTable extends IDTable {
      * @param name the name of the component
      * @return the given id if successful, -1 if not.
      */
-	public int insertProvidedResource( int resourceTypeId, String name){
+	public int insertProvidedResource( int resourceTypeId, String name) throws DBException{
 		int id=this.getNextId();
 		if(insertProvidedResource(id, resourceTypeId,  name))
 			return id;
 		else return -1;
 	}
 
-	public ProvidedResource getProvidedResource(int id){
+	public ProvidedResource getProvidedResource(int id) throws DBException{
 		return new ProvidedResource(id);
 	}
         
@@ -60,7 +60,7 @@ public class ProvidedResourceTable extends IDTable {
          * 
      * @return 
          */
-        public List<ProvidedResource> getAllProvidedResources(){
+        public List<ProvidedResource> getAllProvidedResources() throws DBException{
              List<ProvidedResource> results=new java.util.LinkedList();
             List<String> IDs=doSelect("id","TRUE").get("id");
             //for each of the ids create the module

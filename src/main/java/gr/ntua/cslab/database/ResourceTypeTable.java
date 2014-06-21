@@ -22,7 +22,7 @@ public class ResourceTypeTable extends IDTable {
 	 * @param type
      * @return true if everything went smoothly, else it returns false
 	 */
-	public boolean insertProvidedResource(int id, String type){
+	public boolean insertProvidedResource(int id, String type) throws DBException{
 		Map<String, String> data = new java.util.TreeMap<String, String>();
 		data.put("id", Integer.toString(id));
 		data.put("type",type);
@@ -37,7 +37,7 @@ public class ResourceTypeTable extends IDTable {
 	 * @param type
 	 * @return the given id if successful, -1 if not. 
 	 */
-	public int insertResourceType(String type){
+	public int insertResourceType(String type) throws DBException{
 		int id=this.getNextId();
 		if(ResourceTypeTable.this.insertProvidedResource(id,type))
 			return id;

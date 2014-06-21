@@ -1,5 +1,6 @@
 package gr.ntua.cslab.database.entities;
 
+import gr.ntua.cslab.database.DBException;
 import gr.ntua.cslab.database.DeploymentTable;
 import gr.ntua.cslab.database.Tables;
 import java.sql.Timestamp;
@@ -42,7 +43,7 @@ public class Deployment extends DBIDEntity{
 	 * @param id
 	 * @param table 
 	 */
-	public Deployment(int id){
+	public Deployment(int id) throws DBException{
 		super(id, Tables.deplTable);
 	}
 	
@@ -61,7 +62,7 @@ public class Deployment extends DBIDEntity{
 	 * @return true if successful false if not 
 	 */
 	@Override
-	public boolean store() {
+	public boolean store()  throws DBException{
 		DeploymentTable t=(DeploymentTable) table;
 		this.id=t.insertDeployment(applicationId, startTime,endTime);
 		if(id!=0){

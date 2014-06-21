@@ -1,5 +1,6 @@
 package gr.ntua.cslab.database.entities;
 
+import gr.ntua.cslab.database.DBException;
 import gr.ntua.cslab.database.MetricValueTable;
 import gr.ntua.cslab.database.Tables;
 import java.sql.Timestamp;
@@ -40,7 +41,7 @@ public class MetricValue extends DBIDEntity{
 	 * Creates an previously stored resource directly from  the database
 	 * @param id
 	 */
-	public MetricValue(int id){
+	public MetricValue(int id) throws DBException{
 		super(id, Tables.mvTable);
 	}
 	
@@ -59,7 +60,7 @@ public class MetricValue extends DBIDEntity{
 	 * @return true if successful false if not 
 	 */
 	@Override
-	public boolean store() {
+	public boolean store()  throws DBException{
 		MetricValueTable t=(MetricValueTable) table;
 		this.id=t.insertMetricValue(metricId,resourceId, timestamp);
 		if(id!=0){

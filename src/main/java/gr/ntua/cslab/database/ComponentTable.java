@@ -28,7 +28,7 @@ public class ComponentTable extends IDTable {
 	 * @param PROVIDED_RESOURCE_id the provided resource this component is an istance of
 	 * @return true if success false if not
 	 */
-	public boolean insertComponent(int id, String description, int MODULE_id, int PROVIDED_RESOURCE_id){
+	public boolean insertComponent(int id, String description, int MODULE_id, int PROVIDED_RESOURCE_id) throws DBException{
 		Map<String, String> data = new java.util.TreeMap<String, String>();
 		data.put("id", Integer.toString(id));
 		data.put("MODULE_id",Integer.toString(MODULE_id));
@@ -45,7 +45,7 @@ public class ComponentTable extends IDTable {
 	 * @param name the name of the component
 	 * @return the given id if successful, -1 if not. 
 	 */
-	public int insertComponent(String description, int MODULE_id, int PROVIDED_RESOURCE_id){
+	public int insertComponent(String description, int MODULE_id, int PROVIDED_RESOURCE_id) throws DBException{
 		int id=this.getNextId();
 		if(insertComponent(id, description, MODULE_id,  PROVIDED_RESOURCE_id))
 			return id;
@@ -57,7 +57,7 @@ public class ComponentTable extends IDTable {
          * @param moduleId
          * @return a list of components
          */
-        public List<Component> getModuleComponents(int moduleId) {  
+        public List<Component> getModuleComponents(int moduleId) throws DBException {  
             List<Component> results=new LinkedList();
             String field="id";
             String testField="MODULE_id";            
@@ -69,7 +69,7 @@ public class ComponentTable extends IDTable {
             return  results;
         }
         
-        public Component getComponentByDescription(String description){
+        public Component getComponentByDescription(String description) throws DBException{
             System.out.println("geting description: "+description);
             List<Integer> IDs=getIdsForSelection("description",description);
             if (IDs.size()>0)
