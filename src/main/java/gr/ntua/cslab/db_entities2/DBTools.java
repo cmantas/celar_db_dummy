@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package gr.ntua.cslab.database.entities2;
+package gr.ntua.cslab.db_entities2;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -82,6 +82,7 @@ public class DBTools extends DBConnectable{
         data.put("id", "DEFAULT");
             
         String query = SQLTools.insertSQL(tableName, data);
+        LOG.debug(query);
         try {
             Statement statement = connection.createStatement();
             statement.execute(query, Statement.RETURN_GENERATED_KEYS);
@@ -156,8 +157,6 @@ public class DBTools extends DBConnectable{
      */
     public static List<Map<String, String>> doSelect(String tableName, String whereStatement) throws DBException {
         String query = SQLTools.selectSQL(tableName, whereStatement);
-        LOG.debug("Running a query");
-        LOG.debug(query);
         //try executing the query, else return null
         List<Map<String, String>> results = new java.util.LinkedList();
         ResultSet resultSet = executeQuery(query);
@@ -191,7 +190,7 @@ public class DBTools extends DBConnectable{
      * @throws DBException 
      */
     public static List<Map<String, String>> doSelectByField(String tablename, String field, String value) throws DBException {
-        return doSelect(tablename, field + "='" + value + "'");
+        return doSelect(tablename, "\""+field + "\" ='" + value + "'");
     }
 
     /**

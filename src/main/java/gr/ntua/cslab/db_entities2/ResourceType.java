@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 
-package gr.ntua.cslab.database.entities2;
+package gr.ntua.cslab.db_entities2;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,11 +52,15 @@ public class ResourceType extends DBIDEntity{
     public String getTableName() {
         return "RESOURCE_TYPE";
     }
+    
+    public String getTypeName(){
+        return this.type;
+    }
 
     
 
     /**
-     * gets the user with the specified type
+     * gets the resource with the specified String type (assumed unique)
      * 
      * @param type
      * @return 
@@ -63,7 +68,11 @@ public class ResourceType extends DBIDEntity{
     */
     public static ResourceType getByName(String type) throws DBException{
         ResourceType dummy = new ResourceType();
-        return (ResourceType)dummy.getByField("type", type).get(0);
+        List<ResourceType> list = dummy.getByField("type", type);
+        if(list.size()==0){
+            throw new DBException(DBException.NO_SUCH_ENTRY, "No resources found of type: "+type);
+        }
+        return list.get(0);
 
     }
     

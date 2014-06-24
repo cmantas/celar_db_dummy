@@ -1,7 +1,8 @@
 package gr.ntua.cslab.deployment;
 
-import gr.ntua.cslab.database.DBException;
-import gr.ntua.cslab.database.entities.User;
+import gr.ntua.cslab.JSONServlet2;
+import gr.ntua.cslab.db_entities2.DBException;
+import gr.ntua.cslab.db_entities2.User;
 import java.util.Arrays;
 import java.util.Map;
 import org.json.JSONObject;
@@ -10,9 +11,7 @@ import org.json.JSONObject;
  *
  * @author cmantas
  */
-public class AddUser extends gr.ntua.cslab.JSONServlet {
-
-  
+public class AddUser extends JSONServlet2 {
 
     @Override
     public Iterable<String> requestJSONParameters() {
@@ -26,10 +25,13 @@ public class AddUser extends gr.ntua.cslab.JSONServlet {
     @Override
     public void processRequest(Map<String, JSONObject> inputJSONParameters,
             Map<String, String> inputStringParameters) throws DBException{
+        
+         logger.info("adding a user");
          JSONObject userj=inputJSONParameters.get("user").getJSONObject("user");
          User user=new User(userj);
          user.store();
-         print(user.getId());
+         print(user.toJSONObject());
+         //print("dummy result");
     }
 
     @Override

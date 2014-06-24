@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package gr.ntua.cslab.database.entities2;
+package gr.ntua.cslab.db_entities2;
 
 import java.sql.Timestamp;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class Application extends DBEntity {
     static Logger LOG = Logger.getLogger(Application.class);
     
     static{
-        LOG.setLevel(DEBUG);
+        //LOG.setLevel(DEBUG);
     }
 
     public Application() {
@@ -63,7 +63,6 @@ public class Application extends DBEntity {
     @Override
     protected void fromMap(Map<String, String> fields) {
         this.id = fields.get("id");
-        LOG.debug("parsed id = "+this.id);
         this.uniqueId = Integer.parseInt(fields.get("unique_id"));
         this.majorVersion = Integer.parseInt(fields.get("major_version"));
         this.minorVersion = Integer.parseInt(fields.get("minor_version"));

@@ -4,9 +4,10 @@
  * and open the template in the editor.
  */
 
-package gr.ntua.cslab.database.entities2;
+package gr.ntua.cslab.db_entities2;
 
 import java.util.Map;
+import org.json.JSONObject;
 
 /**
  *
@@ -19,8 +20,8 @@ public class User extends DBIDEntity{
         super();
     }
     
-    public User(String name){
-        this.name=name;
+    public User(JSONObject jo){
+        super(jo);
     }
     
     public User(Map<String, String> inmap){
@@ -29,6 +30,11 @@ public class User extends DBIDEntity{
     
     public User(int id) throws DBException{
         super(id);
+    }
+    
+    
+    public User(String name){
+        this.name=name;
     }
 
     @Override

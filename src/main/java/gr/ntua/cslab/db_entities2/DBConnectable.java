@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package gr.ntua.cslab.database.entities2;
+package gr.ntua.cslab.db_entities2;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -25,7 +25,7 @@ public abstract class DBConnectable {
     final static Logger LOG = Logger.getLogger(DBConnectable.class.getName());
 
     //the prop file location
-    final static String PROPERTIES_FILE = "src/main/resources/db_credentials.properties";
+    final static String PROPERTIES_FILE = "src/main/resources/db_entities2.properties";
 
     //the properties required for the DB connection
     static String BACKEND, HOST, PORT, USER, PASSWORD, DB_NAME;
@@ -60,7 +60,13 @@ public abstract class DBConnectable {
             DB_NAME = prop.getProperty(BACKEND + ".db_name");
 
         } catch (IOException ex) {
-            LOG.fatal("Could not load the properties for the DB Connection");
+            LOG.error("Could not load the properties for the DB Connection");
+            BACKEND ="postgresql";
+            HOST = "localhost";
+            PORT = ""+5432;
+            USER = "celaruser";
+            PASSWORD = "celar-user";
+            DB_NAME = "celardb";
         } finally {
             if (input != null) {
                 try {

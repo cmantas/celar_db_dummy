@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package gr.ntua.cslab.database.entities2;
+package gr.ntua.cslab.db_entities2;
 
 import java.sql.SQLException;
 

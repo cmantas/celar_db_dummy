@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gr.ntua.cslab.database.entities2;
+package gr.ntua.cslab.db_entities2;
 
 import java.util.Map;
+import org.json.JSONObject;
 
 /**
  *
@@ -24,6 +25,10 @@ public abstract class DBIDEntity extends DBEntity {
          Map fields = DBTools.doSelectByID(this.getTableName(), id);
          this.fromMap(fields);
      }
+     
+    public DBIDEntity(JSONObject jo){
+        super(jo);
+    }
     
     public DBIDEntity(Map<String, String> fields) {
         super(fields);
@@ -47,5 +52,9 @@ public abstract class DBIDEntity extends DBEntity {
      */
     public void delete() throws DBException{
         DBTools.doDeleteID(this.getTableName(), id);
+    }
+    
+    public int getId(){
+        return this.id;
     }
 }

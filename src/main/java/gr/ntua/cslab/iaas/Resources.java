@@ -1,7 +1,7 @@
 package gr.ntua.cslab.iaas;
-import gr.ntua.cslab.JSONServlet;
-import gr.ntua.cslab.database.DBException;
-import static gr.ntua.cslab.database.entities.JSONTools.exportProvidedResources;
+import gr.ntua.cslab.JSONServlet2;
+import gr.ntua.cslab.db_entities2.DBException;
+import static gr.ntua.cslab.db_entities2.parsers.ResourceParsers.exportProvidedResourcesByType;
 import java.util.List;
 import java.util.Map;
 import org.json.JSONObject;
@@ -11,7 +11,7 @@ import org.json.JSONObject;
  *
  * @author cmantas
  */
-public class Resources extends JSONServlet {
+public class Resources extends JSONServlet2 {
 
     @Override
     public byte getType() {return JSON_TYPE; }
@@ -29,7 +29,7 @@ public class Resources extends JSONServlet {
     @Override
     public void processRequest(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters) throws DBException {
         String type=inputStringParameters.get("type");
-        print(exportProvidedResources(type));
+        print(exportProvidedResourcesByType(type));
     }
 
     @Override

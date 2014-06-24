@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package gr.ntua.cslab.database.entities2;
+package gr.ntua.cslab.db_entities2;
 
 import java.util.Map;
 import org.apache.commons.lang3.StringEscapeUtils;

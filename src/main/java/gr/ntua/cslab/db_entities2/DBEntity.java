@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package gr.ntua.cslab.database.entities2;
+package gr.ntua.cslab.db_entities2;
 
 import java.util.Iterator;
 import java.util.List;
@@ -90,7 +90,9 @@ public abstract class DBEntity {
         Map<String,String> m = new java.util.TreeMap();
         for(Object i: jo.keySet()){
             String key = (String) i;
-            m.put(key, jo.getString(key));
+            Object value = jo.get(key);
+            if(value instanceof String)
+                m.put(key, (String)value);
         }
         fromMap(m);
     }

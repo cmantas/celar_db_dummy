@@ -4,22 +4,26 @@
  * and open the template in the editor.
  */
 
-package gr.ntua.cslab.database.entities2;
+package gr.ntua.cslab.db_entities2;
 
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.runners.MethodSorters;
 
 /**
  *
  * @author cmantas
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ProbeTest {
     
     public ProbeTest() {
@@ -45,6 +49,7 @@ public class ProbeTest {
      * Test of fromMap method, of class Probes.
      */
     @Test
+    @Ignore
     public void test_02_maping() {
         System.out.println("fromMap");
         Probe instance = new Probe("my_probe", "dummy content of details");
@@ -55,12 +60,14 @@ public class ProbeTest {
     }
     
     @Test
+    @Ignore
     public void test_02_toJSON(){
         Probe instance = new Probe("my_probe", "dummy content of details");
         System.out.println(instance.toJSONObject().toString(3));
     }
     
     @Test
+    @Ignore
     public void test_04_store(){
         Probe instance = new Probe("my_probe", "dummy content of details");
         try {
