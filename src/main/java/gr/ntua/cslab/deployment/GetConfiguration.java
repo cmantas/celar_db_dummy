@@ -5,11 +5,9 @@
 package gr.ntua.cslab.deployment;
 
 import gr.ntua.cslab.JSONServlet;
-import gr.ntua.cslab.database.DBException;
-import gr.ntua.cslab.database.entities.Application;
+
 import javax.servlet.annotation.WebServlet;
-import static gr.ntua.cslab.database.entities.JSONTools.exportApplicationConfiguration;
-import static gr.ntua.cslab.database.entities.JSONTools.findDeploymentApp;
+
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Map;
@@ -37,7 +35,7 @@ public class GetConfiguration extends JSONServlet {
     }
 
     @Override
-    public void processRequest(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters) throws DBException {
+    public void processRequest(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters)  {
         String deploymentId = inputStringParameters.get("DeploymentId");
         String timestamp = inputStringParameters.get("timestamp");
 
@@ -47,8 +45,8 @@ public class GetConfiguration extends JSONServlet {
         Timestamp ts = timestamp.equals("now")
                 ? new Timestamp(System.currentTimeMillis())
                 : Timestamp.valueOf(timestamp);
-        Application parent = findDeploymentApp(depId);
-        print( exportApplicationConfiguration(parent, ts) );
+//        Application parent = findDeploymentApp(depId);
+//        print( exportApplicationConfiguration(parent, ts) );
 
     }
 

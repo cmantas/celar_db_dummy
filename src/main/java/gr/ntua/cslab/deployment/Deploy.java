@@ -1,11 +1,7 @@
 package gr.ntua.cslab.deployment;
 
 import gr.ntua.cslab.JSONServlet;
-import gr.ntua.cslab.database.DBException;
-import gr.ntua.cslab.database.entities.Application;
-import gr.ntua.cslab.database.entities.Deployment;
-import static gr.ntua.cslab.database.entities.JSONTools.parseApplicationDeploymentConfig;
-import gr.ntua.cslab.database.entities.NotInDBaseException;
+
 import java.util.Arrays;
 import java.util.Map;
 import javax.servlet.annotation.WebServlet;
@@ -41,18 +37,8 @@ public class Deploy extends JSONServlet {
     }
 
     @Override
-    public void processRequest(Map<String, JSONObject> inputJSONParams, Map<String, String> inputStringParams) throws DBException {
-        String appId = inputStringParams.get("ApplicationId").trim();
-        try {
-            JSONObject in_configuration = inputJSONParams.get("deployment_configuration");
-            Application app = new Application(appId);
-            Deployment depl = new Deployment(app, new java.sql.Timestamp(System.currentTimeMillis()), null);
-            depl.store();
-            parseApplicationDeploymentConfig(in_configuration, app, depl, true);
-            print(depl.getId());
-        } catch (NotInDBaseException ndb) {
-            print("there is no app with id: " + appId + " in the DB");
-        }
+    public void processRequest(Map<String, JSONObject> inputJSONParams, Map<String, String> inputStringParams)  {
+        
 
     }
 

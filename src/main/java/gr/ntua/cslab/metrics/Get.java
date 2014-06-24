@@ -4,8 +4,7 @@
  */
 package gr.ntua.cslab.metrics;
 
-import gr.ntua.cslab.database.DBException;
-import gr.ntua.cslab.database.entities.Metric;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -34,21 +33,8 @@ public class Get extends HttpServlet {
 	 * @throws IOException if an I/O error occurs
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException, DBException {
-		response.setContentType("text;charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		try {
-			List<Metric> metrics=gr.ntua.cslab.database.Tables.metricsTable.getAllMetrics();
-                        JSONArray metricsJson=new JSONArray();
-                        for(Metric m:metrics){
-                            metricsJson.put(gr.ntua.cslab.database.entities.JSONTools.exportMetric(m));
-                        }
-                        out.println(metricsJson.toString(3));
-			
-                        
-		} finally {			
-			out.close();
-		}
+		throws ServletException, IOException {
+		
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -64,11 +50,7 @@ public class Get extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
-            try {
-                processRequest(request, response);
-            } catch (DBException ex) {
-                Logger.getLogger(Get.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
 	}
 
 	/**
@@ -83,11 +65,7 @@ public class Get extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
-            try {
-                processRequest(request, response);
-            } catch (DBException ex) {
-                Logger.getLogger(Get.class.getName()).log(Level.SEVERE, null, ex);
-            }
+           
 	}
 
 	/**

@@ -4,7 +4,7 @@ package gr.ntua.cslab;
  *
  * @author cmantas
  */
-import gr.ntua.cslab.database.DBException;
+import gr.ntua.cslab.db_entities.DBException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
@@ -12,13 +12,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-/**
- *
- * @author cmantas
- */
 public abstract class JSONServlet extends HttpServlet {
 
     //response types
@@ -36,7 +33,17 @@ public abstract class JSONServlet extends HttpServlet {
      */
     private PrintWriter out;
 
+    /**
+     * the logger
+     */
+    public Logger logger;
+    
     protected HttpServletRequest request;
+    
+    
+    public JSONServlet(){
+        this.logger = Logger.getLogger(this.getClass());
+    }
 
    //======================= abstract  methods ===============================
     /**
@@ -72,6 +79,7 @@ public abstract class JSONServlet extends HttpServlet {
      * @param jo the JSON Object to print
      */
     public void print(JSONObject jo) {printString(jo.toString(INDENT));}
+    public void print(JSONArray jo) {printString(jo.toString(INDENT));}
 
     /**
      * prints a string object in the output
@@ -185,7 +193,10 @@ public abstract class JSONServlet extends HttpServlet {
             if (requestJSONParameters() != null) {
                 for (String param : requestJSONParameters()) {
                     JSONObject j = getJSONParameter(param);
-                    if(j==null) return;
+                    if (j == null) {
+                        logger.error("found a missing param");
+                        return;
+                    }
                     inputJSONParameters.put(param, j);
                 }
             }
@@ -198,6 +209,7 @@ public abstract class JSONServlet extends HttpServlet {
                     inputStringParams.put(param, p);
                 }
             }
+            
             try{
                 //actually process the input parameters after parsing and checking them
                 processRequest(inputJSONParameters, inputStringParams);
@@ -212,7 +224,12 @@ public abstract class JSONServlet extends HttpServlet {
                 rv.put("error_type", "invalid JSON");
                 rv.put("error_details","error parsing JSON Input");
                 print(rv);
-        } finally {
+        } catch (Exception e){
+            logger.error("Uknown exception: \n"+e.toString());
+            e.printStackTrace();
+        }
+        
+        finally {
             out.close();
         }
     }

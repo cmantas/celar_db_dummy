@@ -5,10 +5,12 @@
 package gr.ntua.cslab.deployment;
 
 import gr.ntua.cslab.JSONServlet;
-import gr.ntua.cslab.database.DBException;
-import gr.ntua.cslab.database.entities.JSONTools;
-import java.util.Map;;
-import org.json.JSONObject;import org.json.JSONObject;
+import gr.ntua.cslab.db_entities.DBException;
+import gr.ntua.cslab.db_entities.User;
+import java.util.List;
+import java.util.Map;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -27,7 +29,13 @@ public class GetUsers extends JSONServlet {
 
     @Override
     public void processRequest(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters) throws DBException {
-        print(JSONTools.exportAllUsers());
+        List<User>  users = User.getAllUsers();
+        JSONArray usersJson = new JSONArray();
+        for(User u: users){
+            usersJson.put(u.toJSONObject());
+        }
+        print(usersJson);
+        
     }
 
     @Override
@@ -37,3 +45,5 @@ public class GetUsers extends JSONServlet {
 
 
 }
+
+    

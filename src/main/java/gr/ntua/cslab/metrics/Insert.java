@@ -2,8 +2,6 @@ package gr.ntua.cslab.metrics;
 
 import gr.ntua.cslab.JSONServlet;
 import java.io.PrintWriter;
-import static gr.ntua.cslab.database.entities.JSONTools.parseMetric;
-import gr.ntua.cslab.database.entities.Metric;
 import java.util.Arrays;
 import java.util.Map;
 import org.json.JSONObject;
@@ -28,9 +26,7 @@ public class Insert extends JSONServlet {
 
     @Override
     public void processRequest(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters) {
-        JSONObject metricJ=inputJSONParameters.get("metric");
-        Metric m=parseMetric(metricJ, true, new PrintWriter(System.out));
-        print(m.getId());
+        
     }
 
     @Override

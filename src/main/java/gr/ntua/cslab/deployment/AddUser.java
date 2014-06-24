@@ -1,8 +1,8 @@
 package gr.ntua.cslab.deployment;
 
-import gr.ntua.cslab.JSONServlet2;
-import gr.ntua.cslab.db_entities2.DBException;
-import gr.ntua.cslab.db_entities2.User;
+import gr.ntua.cslab.JSONServlet;
+import gr.ntua.cslab.db_entities.DBException;
+import gr.ntua.cslab.db_entities.User;
 import java.util.Arrays;
 import java.util.Map;
 import org.json.JSONObject;
@@ -11,7 +11,7 @@ import org.json.JSONObject;
  *
  * @author cmantas
  */
-public class AddUser extends JSONServlet2 {
+public class AddUser extends JSONServlet {
 
     @Override
     public Iterable<String> requestJSONParameters() {

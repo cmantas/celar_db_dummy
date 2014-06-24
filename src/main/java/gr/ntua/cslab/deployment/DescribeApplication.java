@@ -1,9 +1,7 @@
 package gr.ntua.cslab.deployment;
 
 import gr.ntua.cslab.JSONServlet;
-import gr.ntua.cslab.database.DBException;
-import gr.ntua.cslab.database.entities.Application;
-import static gr.ntua.cslab.database.entities.JSONTools.parseApplicationDescription;
+
 import java.util.Map;
 import java.util.Arrays;
 import org.json.JSONObject;
@@ -29,10 +27,8 @@ public class DescribeApplication extends JSONServlet {
     public Iterable<String> requestStringParameters() {return new java.util.LinkedList();}
 
     @Override
-    public void processRequest(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters) throws DBException {
-                Application app=parseApplicationDescription(inputJSONParameters.get("application"),true);
-                //return the app id of the new application
-                print(app.getId());
+    public void processRequest(Map<String, JSONObject> inputJSONParameters, Map<String, String> inputStringParameters) {
+                
     }
 
     @Override
