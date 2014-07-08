@@ -7,6 +7,8 @@ package gr.ntua.cslab.db_entities;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -32,7 +34,7 @@ public abstract class DBConnectable {
     /**
      * the properties file location
      */
-    final static String PROPERTIES_FILE = "src/main/resources/db_entities2.properties";
+    final static String PROPERTIES_FILE = "/db_entities.properties";
 
     /**
      * the properties required for connection to a database
@@ -56,11 +58,11 @@ public abstract class DBConnectable {
         InputStream input = null;
 
         try {
-            input = new FileInputStream(PROPERTIES_FILE);
+            InputStream in = DBConnectable.class.getResourceAsStream(PROPERTIES_FILE);
             // load a properties file
-            prop.load(input);
+            prop.load(in);
 
-            // get the property value and print it out
+            // get the property value 
             BACKEND = prop.getProperty("backend");
             HOST = prop.getProperty(BACKEND + ".host");
             PORT = prop.getProperty(BACKEND + ".port");
@@ -76,7 +78,11 @@ public abstract class DBConnectable {
             USER = "celaruser";
             PASSWORD = "celar-user";
             DB_NAME = "celardb";
-        } finally {
+        } catch (Exception e){
+            e.printStackTrace();
+        } 
+        
+        finally {
             if (input != null) {
                 try {
                     input.close();
